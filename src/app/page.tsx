@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import { AppShell } from "@/components/layout/app-shell";
+import { ProtectedRoute } from "@/components/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Home() {
   return (
+    <ProtectedRoute>
     <AppShell>
       <ScrollArea className="h-full">
         {/* Hero Section */}
@@ -270,5 +274,6 @@ export default function Home() {
         </section>
       </ScrollArea>
     </AppShell>
+    </ProtectedRoute>
   );
 }

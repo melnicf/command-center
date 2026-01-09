@@ -2,11 +2,21 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Menu, Search } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Menu, Search, LogOut, User, Settings } from "lucide-react";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { FullscreenToggle } from "@/components/shared/fullscreen-toggle";
 import { Button } from "@/components/ui/button";
-import { useSidebarStore } from "@/stores/sidebar-store";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useSidebarStore, useAuthStore } from "@/stores";
 import {
   Tooltip,
   TooltipContent,
@@ -15,7 +25,20 @@ import {
 } from "@/components/ui/tooltip";
 
 export function Header() {
+  const router = useRouter();
   const { toggleSidebar } = useSidebarStore();
+  const { user, logout } = useAuthStore();
+
+  const handleLogout = async () => {
+    await logout();
+    router.push("/login");
+  };
+
+  // Get user initials for avatar fallback
+  const getInitials = () => {
+    if (!user) return "U";
+    return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
+  };
 
   return (
     <header className="shrink-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md">
@@ -61,6 +84,55 @@ export function Header() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <FullscreenToggle />
+          
+          {/* User menu */}
+          {user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative h-9 w-9 rounded-full"
+                >
+                  <Avatar className="h-8 w-8 border border-border/50">
+                    <AvatarImage src={user.avatar} alt={`${user.firstName} ${user.lastName}`} />
+                    <AvatarFallback className="bg-primary/10 text-primary text-sm font-medium">
+                      {getInitials()}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {user.firstName} {user.lastName}
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="text-destructive focus:text-destructive"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>

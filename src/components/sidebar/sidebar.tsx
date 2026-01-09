@@ -8,13 +8,17 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { useSidebarStore } from "@/stores/sidebar-store";
+import { useSidebarStore, useUser } from "@/stores";
 import { UserGreeting } from "./user-greeting";
 import { SidebarCalendar } from "./sidebar-calendar";
 import { SidebarTodos } from "./sidebar-todos";
 
 export function Sidebar() {
   const { isOpen, closeSidebar } = useSidebarStore();
+  const user = useUser();
+
+  // Get user's first name or default
+  const userName = user?.firstName || "User";
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && closeSidebar()}>
@@ -26,7 +30,7 @@ export function Sidebar() {
           {/* Header with Greeting */}
           <SheetHeader className="p-6 pb-4">
             <SheetTitle className="sr-only">Sidebar</SheetTitle>
-            <UserGreeting userName="Alex" />
+            <UserGreeting userName={userName} />
           </SheetHeader>
 
           <Separator className="bg-border/50" />
