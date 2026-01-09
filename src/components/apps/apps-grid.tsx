@@ -4,7 +4,7 @@ import * as React from "react";
 import { App } from "@/types";
 import { AppCard, AppViewMode } from "./app-card";
 import { cn } from "@/lib/utils";
-import { Search, X, Package, Grid3X3, LayoutGrid, Square, Maximize } from "lucide-react";
+import { Search, X, Package, Grid3X3, LayoutGrid, Square, Maximize, type LucideIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,7 +21,7 @@ interface AppsGridProps {
   className?: string;
 }
 
-const viewModes: { mode: AppViewMode; icon: React.ElementType; label: string }[] = [
+const viewModes: { mode: AppViewMode; icon: LucideIcon; label: string }[] = [
   { mode: "icons", icon: Grid3X3, label: "Icons only" },
   { mode: "compact", icon: LayoutGrid, label: "Compact" },
   { mode: "default", icon: Square, label: "Default" },

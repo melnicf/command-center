@@ -1,0 +1,414 @@
+"use client";
+
+import * as React from "react";
+import { Suspense, useEffect, useState, useCallback } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Stars } from "@react-three/drei";
+import { CalendarDays, Clock, MapPin, Video, ListTodo, Circle, CheckCircle2 } from "lucide-react";
+import { Earth } from "./earth";
+import { FloatingBadger } from "./floating-objects";
+import { useScreensaverStore, useScreensaverActive, useScreensaverLocationName, useScreensaverTimezone } from "@/stores/screensaver-store";
+import { useUser } from "@/stores";
+import { useGreeting } from "@/hooks/use-greeting";
+import { getTodayEvents, type CalendarEvent } from "@/data/events";
+import { mockTodos, type Todo } from "@/data/todos";
+import { cn } from "@/lib/utils";
+
+interface TimeDisplayProps {
+  timezone: string;
+  location: string;
+}
+
+function TimeDisplay({ timezone, location }: TimeDisplayProps) {
+  const [time, setTime] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+  const [timezoneAbbr, setTimezoneAbbr] = useState<string>("");
+  const { greeting, emoji } = useGreeting();
+  const user = useUser();
+  
+  const userName = user?.firstName || "there";
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      
+      // Format time
+      setTime(
+        now.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+          timeZone: timezone,
+        })
+      );
+      
+      // Format date
+      setDate(
+        now.toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          timeZone: timezone,
+        })
+      );
+      
+      // Get timezone abbreviation
+      const tzAbbr = now.toLocaleTimeString("en-US", {
+        timeZone: timezone,
+        timeZoneName: "short",
+      }).split(" ").pop() || timezone;
+      setTimezoneAbbr(tzAbbr);
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, [timezone]);
+
+  return (
+    <div className="absolute top-8 left-8 flex flex-col z-10 pointer-events-none select-none">
+      <div className="text-left space-y-2">
+        {/* Greeting */}
+        <div className="flex items-center gap-2 text-2xl text-white/80 font-light">
+          <span>{emoji}</span>
+          <span>{greeting}, <span className="text-purple-400">{userName}</span></span>
+        </div>
+        
+        {/* Location */}
+        <div className="text-sm font-light tracking-widest text-white/60 uppercase mt-4">
+          {location}
+        </div>
+        
+        {/* Time */}
+        <div className="text-7xl font-extralight tracking-tight text-white tabular-nums">
+          {time}
+        </div>
+        
+        {/* Date and Timezone */}
+        <div className="flex items-center gap-3 text-base text-white/50 font-light">
+          <span>{date}</span>
+          <span className="text-white/30">•</span>
+          <span className="text-primary/80">{timezoneAbbr}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LogoDisplay() {
+  return (
+    <div className="absolute bottom-8 left-8 z-10 pointer-events-none select-none">
+      <img 
+        src="/INVNT logo.png" 
+        alt="INVNT" 
+        className="w-[250px] h-auto animate-float-subtle"
+      />
+    </div>
+  );
+}
+
+// Event type styles for screensaver
+const eventTypeColors = {
+  meeting: "bg-purple-500/20 text-purple-300 border-purple-500/30",
+  task: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+  reminder: "bg-blue-500/20 text-blue-300 border-blue-500/30",
+  event: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+};
+
+const eventTypeIcons = {
+  meeting: Video,
+  task: CalendarDays,
+  reminder: Clock,
+  event: CalendarDays,
+};
+
+const priorityDots = {
+  low: "bg-white/40",
+  medium: "bg-amber-400",
+  high: "bg-red-400",
+};
+
+function ScreensaverSidebar() {
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    setEvents(getTodayEvents());
+    setTodos(mockTodos);
+  }, []);
+
+  const pendingTodos = todos.filter((t) => !t.completed);
+  const completedCount = todos.filter((t) => t.completed).length;
+
+  // Sort todos: incomplete first, then by priority
+  const sortedTodos = [...pendingTodos].sort((a, b) => {
+    const priorityOrder = { high: 0, medium: 1, low: 2 };
+    return priorityOrder[a.priority] - priorityOrder[b.priority];
+  }).slice(0, 5); // Show only top 5
+
+  const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
+
+  return (
+    <div className="absolute top-1/2 -translate-y-1/2 right-8 w-80 z-10 pointer-events-none select-none space-y-4">
+      {/* Calendar Section */}
+      <div 
+        className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden pointer-events-auto"
+        onClick={stopPropagation}
+      >
+        <div className="px-4 py-3 border-b border-white/10 flex items-center gap-2">
+          <CalendarDays className="h-4 w-4 text-purple-400" />
+          <span className="text-sm font-medium text-white/80">Today&apos;s Schedule</span>
+          <span className="ml-auto text-xs text-white/40 bg-white/10 px-2 py-0.5 rounded-full">
+            {events.length}
+          </span>
+        </div>
+        
+        <div className="p-3 space-y-2 max-h-[200px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+          {events.length > 0 ? (
+            events.map((event) => {
+              const Icon = eventTypeIcons[event.type];
+              return (
+                <div
+                  key={event.id}
+                  className={cn(
+                    "p-2.5 rounded-lg border",
+                    eventTypeColors[event.type]
+                  )}
+                >
+                  <div className="flex items-start gap-2.5">
+                    <Icon className="h-3.5 w-3.5 mt-0.5 shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">{event.title}</p>
+                      <div className="flex items-center gap-1.5 mt-1 text-xs opacity-80">
+                        <Clock className="h-3 w-3" />
+                        <span>{event.startTime} - {event.endTime}</span>
+                      </div>
+                      {event.location && (
+                        <div className="flex items-center gap-1.5 mt-0.5 text-xs opacity-70">
+                          <MapPin className="h-3 w-3" />
+                          <span className="truncate">{event.location}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div className="py-4 text-center text-white/40">
+              <CalendarDays className="h-6 w-6 mx-auto mb-1.5 opacity-50" />
+              <p className="text-xs">No events today</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Tasks Section */}
+      <div 
+        className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden pointer-events-auto"
+        onClick={stopPropagation}
+      >
+        <div className="px-4 py-3 border-b border-white/10 flex items-center gap-2">
+          <ListTodo className="h-4 w-4 text-purple-400" />
+          <span className="text-sm font-medium text-white/80">Tasks</span>
+          <div className="ml-auto flex items-center gap-2 text-xs text-white/40">
+            <span className="flex items-center gap-1">
+              <Circle className="h-3 w-3" />
+              {pendingTodos.length}
+            </span>
+            <span className="flex items-center gap-1">
+              <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+              {completedCount}
+            </span>
+          </div>
+        </div>
+        
+        <div className="p-3 space-y-1.5 max-h-[180px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+          {sortedTodos.length > 0 ? (
+            sortedTodos.map((todo) => (
+              <div
+                key={todo.id}
+                className="flex items-center gap-2.5 p-2 rounded-lg bg-white/5"
+              >
+                <span
+                  className={cn(
+                    "h-2 w-2 rounded-full shrink-0",
+                    priorityDots[todo.priority]
+                  )}
+                />
+                <span className="text-sm text-white/80 truncate flex-1">
+                  {todo.title}
+                </span>
+                {todo.dueDate && (
+                  <span className="text-xs text-white/40 shrink-0">
+                    {todo.dueDate.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </span>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="py-4 text-center text-white/40">
+              <ListTodo className="h-6 w-6 mx-auto mb-1.5 opacity-50" />
+              <p className="text-xs">All tasks completed!</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center">
+      <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
+    </div>
+  );
+}
+
+export function Screensaver() {
+  const isActive = useScreensaverActive();
+  const location = useScreensaverLocationName();
+  const timezone = useScreensaverTimezone();
+  const deactivateScreensaver = useScreensaverStore((s) => s.deactivateScreensaver);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Handle mount animation
+  useEffect(() => {
+    if (isActive) {
+      setIsMounted(true);
+      // Small delay for mount before fade in
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setIsVisible(true);
+        });
+      });
+    } else {
+      setIsVisible(false);
+      // Wait for fade out before unmount
+      const timer = setTimeout(() => setIsMounted(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isActive]);
+
+  // Handle any user interaction to dismiss
+  const handleInteraction = useCallback(() => {
+    if (isActive) {
+      deactivateScreensaver();
+    }
+  }, [isActive, deactivateScreensaver]);
+
+  // Listen for any keyboard or mouse events
+  useEffect(() => {
+    if (!isActive) return;
+
+    const events = ["mousedown", "keydown", "touchstart"];
+    
+    // Slight delay to prevent immediate dismissal
+    const timer = setTimeout(() => {
+      events.forEach((event) => {
+        window.addEventListener(event, handleInteraction, { once: true, passive: true });
+      });
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+      events.forEach((event) => {
+        window.removeEventListener(event, handleInteraction);
+      });
+    };
+  }, [isActive, handleInteraction]);
+
+  if (!isMounted) return null;
+
+  return (
+    <div
+      className={cn(
+        "fixed inset-0 z-100 bg-black transition-opacity duration-500",
+        isVisible ? "opacity-100" : "opacity-0"
+      )}
+      onClick={handleInteraction}
+    >
+      {/* Time and Location Display */}
+      <TimeDisplay timezone={timezone} location={location} />
+      
+      {/* INVNT Logo bottom left */}
+      <LogoDisplay />
+      
+      {/* Sidebar with Calendar and Tasks */}
+      <ScreensaverSidebar />
+      
+      {/* 3D Earth Canvas */}
+      <Suspense fallback={<LoadingFallback />}>
+        <Canvas
+          camera={{ position: [0, 0, 8], fov: 45 }}
+          className="absolute! inset-0"
+          gl={{ antialias: true, alpha: true }}
+        >
+          {/* Ambient light for base illumination */}
+          <ambientLight intensity={0.4} />
+          
+          {/* Main sun light */}
+          <directionalLight
+            position={[5, 3, 5]}
+            intensity={2}
+            color="#fff5e6"
+          />
+          
+          {/* Fill light from opposite side for visibility */}
+          <directionalLight
+            position={[-3, -1, -3]}
+            intensity={0.5}
+            color="#4a90d9"
+          />
+          
+          {/* Top fill light */}
+          <pointLight
+            position={[0, 8, 0]}
+            intensity={0.6}
+            color="#ffffff"
+          />
+          
+          {/* Stars background */}
+          <Stars
+            radius={100}
+            depth={50}
+            count={5000}
+            factor={4}
+            saturation={0}
+            fade
+            speed={0.5}
+          />
+          
+          {/* Earth */}
+          <Earth radius={2} />
+          
+          {/* Bowie Badger flying around */}
+          <FloatingBadger />
+          
+          {/* Subtle auto-rotation for camera */}
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            enableRotate={false}
+            autoRotate
+            autoRotateSpeed={0.15}
+          />
+        </Canvas>
+      </Suspense>
+      
+      {/* Dismiss hint */}
+      <div className="absolute bottom-8 left-0 right-0 text-center pointer-events-none">
+        <p className="text-sm text-white/30 font-light tracking-wide">
+          Press any key or move mouse to exit
+        </p>
+      </div>
+    </div>
+  );
+}

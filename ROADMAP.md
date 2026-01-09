@@ -177,27 +177,52 @@ A modern command center application for organizational workspace management.
 
 ---
 
-### Phase 8: Sidebar Features
-- [ ] **8.1** Create Calendar component with mock events
-- [ ] **8.2** Create event types and mock event data
-- [ ] **8.3** Create TodoList component
-- [ ] **8.4** Create todo types and mock todo data
-- [ ] **8.5** Add todo CRUD operations (add, toggle, delete)
-- [ ] **8.6** Create time-based greeting logic
-- [ ] **8.7** Create UserGreeting component
-- [ ] **8.8** Style sidebar with glassmorphism effect
-- [ ] **8.9** Add smooth slide-in animation
+### Phase 8: Sidebar Features ✅
+- [x] **8.1** Create Calendar component with mock events
+- [x] **8.2** Create event types and mock event data
+- [x] **8.3** Create TodoList component
+- [x] **8.4** Create todo types and mock todo data
+- [x] **8.5** Add todo CRUD operations (add, toggle, delete)
+- [x] **8.6** Create time-based greeting logic
+- [x] **8.7** Create UserGreeting component
+- [x] **8.8** Style sidebar with glassmorphism effect
+- [x] **8.9** Add smooth slide-in animation
+
+---
+
+### Phase 8.5: Screensaver Mode ✅
+- [x] **8.5.1** Install React Three Fiber and Three.js
+- [x] **8.5.2** Create idle detection hook with configurable timeout (2 min default)
+- [x] **8.5.3** Create screensaver store for state management
+- [x] **8.5.4** Create 3D Earth component with:
+  - Accurate rotation speed
+  - Day/night illumination based on real sun position
+  - NASA Blue Marble and Black Marble textures (via CDN)
+  - Custom shader for day/night terminator transition
+- [x] **8.5.5** Create screensaver overlay with:
+  - Time-based greeting with user name
+  - Location display (auto-detected from timezone)
+  - Real-time date and time (24h format)
+  - Smooth fade in/out transitions
+- [x] **8.5.6** Add sidebar panel with:
+  - Today's schedule (calendar events)
+  - Tasks list with priority indicators
+  - Glassmorphism styling
+  - Scrollable sections
+- [x] **8.5.7** Add floating elements:
+  - INVNT logo (bottom-left with subtle animation)
+  - Bowie Badger orbiting the Earth
+  - Starfield background
+- [x] **8.5.8** Add screensaver trigger button in header
+- [x] **8.5.9** Add keyboard shortcut (Cmd/Ctrl+Shift+S) for manual activation
+- [x] **8.5.10** Auto-dismiss on click/keypress (mouse movement allowed)
 
 ---
 
 ### Phase 9: Polish & UX Enhancements
-- [ ] **9.1** Add loading states and skeletons
-- [ ] **9.2** Add toast notifications (sonner)
 - [ ] **9.3** Add page transitions/animations
-- [ ] **9.4** Ensure full responsive design (mobile, tablet, desktop)
 - [ ] **9.5** Add keyboard navigation support
 - [ ] **9.6** Add empty states for lists
-- [ ] **9.7** Optimize images and icons
 - [ ] **9.8** Add subtle micro-interactions
 
 ---

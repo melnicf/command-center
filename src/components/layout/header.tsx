@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Menu, Search, LogOut, User, Settings } from "lucide-react";
+import { Menu, Search, LogOut, User, Settings, MonitorPlay } from "lucide-react";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { FullscreenToggle } from "@/components/shared/fullscreen-toggle";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useSidebarStore, useAuthStore } from "@/stores";
+import { useSidebarStore, useAuthStore, useScreensaverStore } from "@/stores";
 import {
   Tooltip,
   TooltipContent,
@@ -28,6 +28,7 @@ export function Header() {
   const router = useRouter();
   const { toggleSidebar } = useSidebarStore();
   const { user, logout } = useAuthStore();
+  const { activateScreensaver } = useScreensaverStore();
 
   const handleLogout = async () => {
     await logout();
@@ -84,6 +85,26 @@ export function Header() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <FullscreenToggle />
+          
+          {/* Screensaver trigger */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={activateScreensaver}
+                  className="border-border/50 bg-background/50 backdrop-blur-sm hover:bg-accent hover:border-primary/30 transition-all duration-200"
+                >
+                  <MonitorPlay className="h-[1.2rem] w-[1.2rem]" />
+                  <span className="sr-only">Start screensaver</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Screensaver (⌘⇧S)</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           
           {/* User menu */}
           {user && (

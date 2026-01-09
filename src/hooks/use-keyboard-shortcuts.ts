@@ -2,9 +2,11 @@
 
 import * as React from "react";
 import { useSidebarStore } from "@/stores/sidebar-store";
+import { useScreensaverStore } from "@/stores/screensaver-store";
 
 export function useKeyboardShortcuts() {
   const { toggleSidebar } = useSidebarStore();
+  const { activateScreensaver, isActive: screensaverActive } = useScreensaverStore();
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -27,6 +29,14 @@ export function useKeyboardShortcuts() {
         toggleSidebar();
       }
 
+      // Cmd/Ctrl + Shift + S - Activate screensaver manually
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === "s") {
+        e.preventDefault();
+        if (!screensaverActive) {
+          activateScreensaver();
+        }
+      }
+
       // ESC - Close sidebar (only when sidebar is open)
       if (e.key === "Escape") {
         // Sidebar will close via Sheet's built-in ESC handling
@@ -36,5 +46,5 @@ export function useKeyboardShortcuts() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [toggleSidebar]);
+  }, [toggleSidebar, activateScreensaver, screensaverActive]);
 }

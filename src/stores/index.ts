@@ -13,3 +13,9 @@ export {
   useChatIsTyping,
   useChatSuggestions
 } from "./chat-store";
+export {
+  useScreensaverStore,
+  useScreensaverActive,
+  useScreensaverLocationName,
+  useScreensaverTimezone
+} from "./screensaver-store";
