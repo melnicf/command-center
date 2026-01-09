@@ -3,40 +3,68 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ============================================
+   INVNT Command Center - Design System
+   ============================================ */
+
 @theme inline {
+  /* Base colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  
+  /* Typography */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
+  
+  /* Component colors */
   --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  /* Semantic colors */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  
+  /* INVNT Brand colors */
+  --color-glow: var(--glow);
+  --color-neon: var(--neon);
+  
+  /* Chart colors */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  
+  /* Sidebar colors */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Border radius */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -46,80 +74,338 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
+/* ============================================
+   Light Theme - INVNT Brand Colors
+   ============================================ */
 :root {
+  /* Base radius */
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  
+  /* Background & Foreground */
+  --background: #FAFAFA;
+  --foreground: #18181B;
+  
+  /* Card */
+  --card: #FFFFFF;
+  --card-foreground: #18181B;
+  
+  /* Popover */
+  --popover: #FFFFFF;
+  --popover-foreground: #18181B;
+  
+  /* Primary - Deep Violet */
+  --primary: #7C3AED;
+  --primary-foreground: #FFFFFF;
+  
+  /* Secondary */
+  --secondary: #F5F5F5;
+  --secondary-foreground: #18181B;
+  
+  /* Muted */
+  --muted: #F5F5F5;
+  --muted-foreground: #71717A;
+  
+  /* Accent - Vivid Purple */
+  --accent: #8B5CF6;
+  --accent-foreground: #FFFFFF;
+  
+  /* Destructive - Rose */
+  --destructive: #F43F5E;
+  --destructive-foreground: #FFFFFF;
+  
+  /* Border & Input */
+  --border: rgba(124, 58, 237, 0.15);
+  --input: rgba(124, 58, 237, 0.1);
+  --ring: #7C3AED;
+  
+  /* Semantic Colors */
+  --success: #10B981;
+  --success-foreground: #FFFFFF;
+  --warning: #F59E0B;
+  --warning-foreground: #18181B;
+  --info: #0EA5E9;
+  --info-foreground: #FFFFFF;
+  
+  /* INVNT Brand */
+  --glow: #A855F7;
+  --neon: #D946EF;
+  
+  /* Chart Colors */
+  --chart-1: #7C3AED;
+  --chart-2: #A855F7;
+  --chart-3: #D946EF;
+  --chart-4: #10B981;
+  --chart-5: #0EA5E9;
+  
+  /* Sidebar */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #18181B;
+  --sidebar-primary: #7C3AED;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F5F5F5;
+  --sidebar-accent-foreground: #18181B;
+  --sidebar-border: rgba(124, 58, 237, 0.15);
+  --sidebar-ring: #7C3AED;
 }
 
+/* ============================================
+   Dark Theme - INVNT Brand Colors (Primary)
+   ============================================ */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Background & Foreground - Deep Black */
+  --background: #0a0a0a;
+  --foreground: #FAFAFA;
+  
+  /* Card - Dark Charcoal */
+  --card: #111111;
+  --card-foreground: #FAFAFA;
+  
+  /* Popover */
+  --popover: #1a1a1a;
+  --popover-foreground: #FAFAFA;
+  
+  /* Primary - Rich Violet */
+  --primary: #8B5CF6;
+  --primary-foreground: #FFFFFF;
+  
+  /* Secondary */
+  --secondary: #1a1a1a;
+  --secondary-foreground: #FAFAFA;
+  
+  /* Muted */
+  --muted: #1a1a1a;
+  --muted-foreground: #A1A1AA;
+  
+  /* Accent - Bright Magenta/Purple */
+  --accent: #A855F7;
+  --accent-foreground: #FFFFFF;
+  
+  /* Destructive - Rose */
+  --destructive: #F43F5E;
+  --destructive-foreground: #FFFFFF;
+  
+  /* Border & Input - Subtle purple tint */
+  --border: rgba(139, 92, 246, 0.2);
+  --input: rgba(139, 92, 246, 0.15);
+  --ring: #8B5CF6;
+  
+  /* Semantic Colors */
+  --success: #10B981;
+  --success-foreground: #FFFFFF;
+  --warning: #F59E0B;
+  --warning-foreground: #18181B;
+  --info: #0EA5E9;
+  --info-foreground: #FFFFFF;
+  
+  /* INVNT Brand */
+  --glow: #C084FC;
+  --neon: #E879F9;
+  
+  /* Chart Colors */
+  --chart-1: #8B5CF6;
+  --chart-2: #A855F7;
+  --chart-3: #D946EF;
+  --chart-4: #10B981;
+  --chart-5: #0EA5E9;
+  
+  /* Sidebar - with glassmorphism support */
+  --sidebar: rgba(17, 17, 17, 0.8);
+  --sidebar-foreground: #FAFAFA;
+  --sidebar-primary: #8B5CF6;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: rgba(139, 92, 246, 0.15);
+  --sidebar-accent-foreground: #FAFAFA;
+  --sidebar-border: rgba(139, 92, 246, 0.2);
+  --sidebar-ring: #8B5CF6;
 }
 
+/* ============================================
+   Base Styles
+   ============================================ */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Smooth theme transitions */
+  html {
+    transition: color-scheme 0.3s ease;
+  }
+  
+  html.dark {
+    color-scheme: dark;
+  }
+  
+  html:not(.dark) {
+    color-scheme: light;
+  }
+}
+
+/* ============================================
+   Typography Scale
+   ============================================ */
+@layer base {
+  h1 {
+    @apply text-4xl font-bold tracking-tight lg:text-5xl;
+  }
+  
+  h2 {
+    @apply text-3xl font-semibold tracking-tight;
+  }
+  
+  h3 {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+  
+  h4 {
+    @apply text-xl font-semibold tracking-tight;
+  }
+  
+  h5 {
+    @apply text-lg font-semibold;
+  }
+  
+  h6 {
+    @apply text-base font-semibold;
+  }
+  
+  p {
+    @apply leading-7;
+  }
+  
+  .lead {
+    @apply text-xl text-muted-foreground;
+  }
+  
+  .large {
+    @apply text-lg font-semibold;
+  }
+  
+  .small {
+    @apply text-sm font-medium leading-none;
+  }
+  
+  .muted {
+    @apply text-sm text-muted-foreground;
+  }
+}
+
+/* ============================================
+   Utility Classes - INVNT Brand Effects
+   ============================================ */
+@layer utilities {
+  /* Purple glow effect for interactive elements */
+  .glow-purple {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+  }
+  
+  .glow-purple-sm {
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+  }
+  
+  .glow-purple-lg {
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+  }
+  
+  /* Primary gradient */
+  .gradient-primary {
+    background: linear-gradient(135deg, #7C3AED, #A855F7, #D946EF);
+  }
+  
+  .gradient-primary-text {
+    background: linear-gradient(135deg, #7C3AED, #A855F7, #D946EF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Glassmorphism effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .dark .glass {
+    background: rgba(17, 17, 17, 0.8);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+  }
+  
+  /* Glassmorphism with purple tint */
+  .glass-purple {
+    background: rgba(139, 92, 246, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+  }
+  
+  /* Smooth transitions */
+  .transition-theme {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Text gradient animation */
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+  }
+  
+  /* Glow pulse animation */
+  @keyframes glow-pulse {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+    }
+  }
+  
+  .animate-glow {
+    animation: glow-pulse 2s ease-in-out infinite;
+  }
+}
+
+/* ============================================
+   Scrollbar Styling
+   ============================================ */
+@layer base {
+  /* Custom scrollbar for webkit browsers */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.5);
+  }
+  
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
   }
 }

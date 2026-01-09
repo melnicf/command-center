@@ -1,65 +1,259 @@
 import Image from "next/image";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { FullscreenToggle } from "@/components/shared/fullscreen-toggle";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="h-screen flex flex-col bg-background overflow-hidden">
+      {/* Header - Fixed */}
+      <header className="shrink-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md">
+        <div className="flex h-14 items-center justify-between px-4">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/INVNT logo.png"
+              alt="INVNT"
+              width={32}
+              height={32}
+              className="object-contain"
+            />
+            <span className="text-xl font-bold gradient-primary-text">Command Center</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <FullscreenToggle />
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content - Scrollable */}
+      <div className="flex-1 overflow-auto">
+        {/* Hero Section */}
+        <section className="container mx-auto px-4 py-12">
+          <div className="mx-auto max-w-3xl text-center">
+            <Badge variant="secondary" className="mb-4">
+              Phase 2: Theme & Design System ✓
+            </Badge>
+            <h1 className="mb-4 gradient-primary-text animate-gradient">
+              Command Center
+            </h1>
+            <p className="lead mb-8">
+              A modern command center application for organizational workspace management.
+              Toggle between dark and light themes, or enter fullscreen mode for a desktop-app experience.
+            </p>
+            <div className="flex justify-center gap-4">
+              <Button size="lg" className="glow-purple">
+                Get Started
+              </Button>
+              <Button size="lg" variant="outline">
+                Learn More
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Color Palette Demo */}
+        <section className="container mx-auto px-4 py-8">
+          <h2 className="mb-8 text-center">Color Palette</h2>
+          
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {/* Primary */}
+            <Card className="overflow-hidden">
+              <div className="h-24 bg-primary" />
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">Primary</CardTitle>
+                <CardDescription>Rich Violet</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <code className="text-sm text-muted-foreground">--primary</code>
+              </CardContent>
+            </Card>
+
+            {/* Accent */}
+            <Card className="overflow-hidden">
+              <div className="h-24 bg-accent" />
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">Accent</CardTitle>
+                <CardDescription>Bright Purple</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <code className="text-sm text-muted-foreground">--accent</code>
+              </CardContent>
+            </Card>
+
+            {/* Glow */}
+            <Card className="overflow-hidden">
+              <div className="h-24 bg-glow" />
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">Glow</CardTitle>
+                <CardDescription>Magenta Accent</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <code className="text-sm text-muted-foreground">--glow</code>
+              </CardContent>
+            </Card>
+
+            {/* Neon */}
+            <Card className="overflow-hidden">
+              <div className="h-24 bg-neon" />
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">Neon</CardTitle>
+                <CardDescription>Electric Purple</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <code className="text-sm text-muted-foreground">--neon</code>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Semantic Colors */}
+          <h3 className="mb-4 mt-12">Semantic Colors</h3>
+          <div className="flex flex-wrap gap-4">
+            <Badge className="bg-success text-success-foreground">Success</Badge>
+            <Badge className="bg-warning text-warning-foreground">Warning</Badge>
+            <Badge className="bg-destructive text-destructive-foreground">Destructive</Badge>
+            <Badge className="bg-info text-info-foreground">Info</Badge>
+          </div>
+        </section>
+
+        {/* Typography Demo */}
+        <section className="container mx-auto px-4 py-8">
+          <h2 className="mb-8 text-center">Typography Scale</h2>
+          
+          <Card className="p-8">
+            <div className="space-y-6">
+              <div>
+                <span className="muted">h1</span>
+                <h1>Heading One</h1>
+              </div>
+              <div>
+                <span className="muted">h2</span>
+                <h2>Heading Two</h2>
+              </div>
+              <div>
+                <span className="muted">h3</span>
+                <h3>Heading Three</h3>
+              </div>
+              <div>
+                <span className="muted">h4</span>
+                <h4>Heading Four</h4>
+              </div>
+              <div>
+                <span className="muted">h5</span>
+                <h5>Heading Five</h5>
+              </div>
+              <div>
+                <span className="muted">h6</span>
+                <h6>Heading Six</h6>
+              </div>
+              <div>
+                <span className="muted">paragraph</span>
+                <p>
+                  This is a paragraph of body text. The quick brown fox jumps over the lazy dog.
+                  Typography is set using the Geist font family for a modern, clean look.
+                </p>
+              </div>
+              <div>
+                <span className="muted">lead</span>
+                <p className="lead">
+                  This is lead text, perfect for introductions and summaries.
+                </p>
+              </div>
+            </div>
+          </Card>
+        </section>
+
+        {/* Button & Component Demo */}
+        <section className="container mx-auto px-4 py-8">
+          <h2 className="mb-8 text-center">Components</h2>
+          
+          <Card className="p-8">
+            <h3 className="mb-6">Buttons</h3>
+            <div className="flex flex-wrap gap-4">
+              <Button>Default</Button>
+              <Button variant="secondary">Secondary</Button>
+              <Button variant="outline">Outline</Button>
+              <Button variant="ghost">Ghost</Button>
+              <Button variant="link">Link</Button>
+              <Button variant="destructive">Destructive</Button>
+            </div>
+            
+            <h3 className="mb-6 mt-8">Buttons with Glow</h3>
+            <div className="flex flex-wrap gap-4">
+              <Button className="glow-purple-sm">Small Glow</Button>
+              <Button className="glow-purple">Medium Glow</Button>
+              <Button className="glow-purple-lg">Large Glow</Button>
+              <Button className="glow-purple animate-glow">Animated Glow</Button>
+            </div>
+
+            <h3 className="mb-6 mt-8">Gradient</h3>
+            <div className="flex flex-wrap items-center gap-4">
+              <Button className="gradient-primary border-0 text-white">Gradient Button</Button>
+              <span className="gradient-primary-text text-2xl font-bold animate-gradient">
+                Gradient Text
+              </span>
+            </div>
+          </Card>
+        </section>
+
+        {/* Glassmorphism Demo */}
+        <section className="container mx-auto px-4 py-8 pb-16">
+          <h2 className="mb-8 text-center">Effects</h2>
+          
+          <div className="relative rounded-xl gradient-primary p-12">
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="glass rounded-xl p-6">
+                <h4 className="mb-2 text-white">Glassmorphism</h4>
+                <p className="text-white/80">
+                  Frosted glass effect with backdrop blur, perfect for overlays and sidebars.
+                </p>
+              </div>
+              <div className="glass-purple rounded-xl p-6">
+                <h4 className="mb-2 text-white">Glass Purple</h4>
+                <p className="text-white/80">
+                  Purple-tinted glassmorphism matching the INVNT brand aesthetic.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Desktop App Note */}
+        <section className="container mx-auto px-4 py-8 pb-16">
+          <Card className="p-8 border-primary/30 bg-primary/5">
+            <div className="flex items-start gap-4">
+              <div className="rounded-full p-3 bg-primary/10">
+                <Image
+                  src="/INVNT logo.png"
+                  alt="INVNT"
+                  width={24}
+                  height={24}
+                  className="object-contain"
+                />
+              </div>
+              <div>
+                <h3 className="mb-2">Desktop App Experience</h3>
+                <p className="text-muted-foreground">
+                  This command center is designed to feel like a native desktop application. 
+                  Use the <strong>fullscreen button</strong> in the header (or press <kbd className="px-2 py-1 bg-muted rounded text-xs">F11</kbd>) 
+                  to enter presentation mode. The interface is optimized for immersive, OS-like interactions.
+                </p>
+              </div>
+            </div>
+          </Card>
+        </section>
+      </div>
+
+      {/* Footer - Fixed */}
+      <footer className="shrink-0 border-t border-border/50 py-3 bg-background/80 backdrop-blur-md">
+        <div className="container mx-auto px-4 text-center">
+          <p className="muted text-xs">
+            INVNT Command Center • Phase 2: Theme & Design System Complete
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </footer>
+    </main>
   );
 }

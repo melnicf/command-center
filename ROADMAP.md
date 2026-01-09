@@ -23,6 +23,34 @@ A modern command center application for organizational workspace management.
 
 ---
 
+## Desktop App / OS-Like Experience
+
+**This webapp should feel like a desktop operating system, not a typical website.**
+
+### Core Principles:
+- **Fullscreen-first design**: The app must be presentable in fullscreen mode (F11 or browser fullscreen API)
+- **No scrolling on main views**: Content should fit within the viewport; use grids and panels instead of scrolling pages
+- **Fixed viewport layout**: Header, sidebar, and content areas should be fixed/sticky with internal scrolling only where needed
+- **Immersive experience**: Minimal browser chrome visibility; feels like a native desktop application
+- **Window-like interactions**: Modals and panels should feel like OS windows/drawers
+
+### Fullscreen Features:
+- **Fullscreen toggle button** in the header (Maximize icon)
+- **Auto-hide header option** in fullscreen mode for maximum immersion
+- **Presentation mode**: Clean view optimized for demos and presentations
+- **ESC key** to exit fullscreen gracefully
+
+### Layout Behavior:
+- Use `100vh` / `100dvh` for main container height
+- Overflow handling within panels, not page-level scrolling
+- Responsive grid system that adapts without breaking the "app" feel
+- Status bar / dock-like elements for quick access
+
+### Assets:
+- **INVNT Logo**: `/public/INVNT logo.png` (official brand logo)
+
+---
+
 ## Development Phases
 
 ### Phase 1: Foundation & Core Setup ✅
@@ -33,25 +61,26 @@ A modern command center application for organizational workspace management.
 
 ---
 
-### Phase 2: Theme & Design System
-- [ ] **2.1** Set up dark/light theme provider with next-themes
-- [ ] **2.2** Configure CSS variables for both themes in globals.css
-- [ ] **2.3** Create theme toggle component
-- [ ] **2.4** Define color palette (primary, secondary, accent colors)
-- [ ] **2.5** Set up typography scale and font imports
+### Phase 2: Theme & Design System ✅
+- [x] **2.1** Set up dark/light theme provider with next-themes
+- [x] **2.2** Configure CSS variables for both themes in globals.css (INVNT brand colors)
+- [x] **2.3** Create theme toggle component
+- [x] **2.4** Define color palette (primary, secondary, accent colors)
+- [x] **2.5** Set up typography scale and font imports (Geist font family)
 
 ---
 
 ### Phase 3: Layout & Navigation Structure
 - [ ] **3.1** Create root layout with theme provider
-- [ ] **3.2** Create main app shell/container component
-- [ ] **3.3** Create top navigation bar component
+- [ ] **3.2** Create main app shell/container component (fixed viewport, no page scroll)
+- [ ] **3.3** Create top navigation bar component (fixed header with fullscreen toggle)
 - [ ] **3.4** Create MacBook-style sliding sidebar (Sheet from right)
   - Transparent blurred background
   - Calendar section with events (mocked)
   - Todo list section (mocked)
   - Time-based greeting ("Good Morning/Afternoon/Evening" + name)
-- [ ] **3.5** Create footer component (optional)
+- [ ] **3.5** Create fullscreen toggle component with browser Fullscreen API
+- [ ] **3.6** Implement keyboard shortcuts (Cmd/Ctrl+K for search, ESC for exit, etc.)
 
 ---
 
