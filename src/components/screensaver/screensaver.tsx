@@ -4,7 +4,7 @@ import * as React from "react";
 import { Suspense, useEffect, useState, useCallback } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
-import { CalendarDays, Clock, MapPin, Video, ListTodo, Circle, CheckCircle2 } from "lucide-react";
+import { CalendarDays, Clock, MapPin, Video, ListTodo, Circle, CheckCircle2, BarChart3 } from "lucide-react";
 import { Earth } from "./earth";
 import { FloatingBadger } from "./floating-objects";
 import { useScreensaverStore, useScreensaverActive, useScreensaverLocationName, useScreensaverTimezone } from "@/stores/screensaver-store";
@@ -12,6 +12,8 @@ import { useUser } from "@/stores";
 import { useGreeting } from "@/hooks/use-greeting";
 import { getTodayEvents, type CalendarEvent } from "@/data/events";
 import { mockTodos, type Todo } from "@/data/todos";
+import { mockSummary, mockIndustryBreakdown, formatNumber } from "@/data/analytics";
+import type { AnalyticsSummary, IndustryBreakdown } from "@/types/analytics";
 import { cn } from "@/lib/utils";
 
 interface TimeDisplayProps {
@@ -130,13 +132,57 @@ const priorityDots = {
   high: "bg-red-400",
 };
 
+// Mini bar chart component for screensaver data preview
+function MiniBarChart({ data }: { data: IndustryBreakdown[] }) {
+  if (!data || data.length === 0) return null;
+  
+  const maxValue = Math.max(...data.map((d) => d.attendees));
+  const maxHeight = 40; // pixels
+  const colors = [
+    "bg-purple-500",
+    "bg-purple-400",
+    "bg-fuchsia-500",
+    "bg-emerald-500",
+    "bg-sky-500",
+  ];
+  
+  return (
+    <div className="flex items-end gap-1.5" style={{ height: `${maxHeight + 16}px` }}>
+      {data.slice(0, 5).map((item, index) => {
+        const barHeight = Math.max(4, (item.attendees / maxValue) * maxHeight);
+        return (
+          <div
+            key={item.industry}
+            className="flex-1 flex flex-col items-center justify-end"
+          >
+            <div
+              className={cn(
+                "w-full rounded-t transition-all duration-500",
+                colors[index % colors.length]
+              )}
+              style={{ height: `${barHeight}px`, opacity: 0.8 }}
+            />
+            <span className="text-[8px] text-white/40 truncate w-full text-center mt-1">
+              {item.industry.slice(0, 3)}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function ScreensaverSidebar() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
+  const [industryData, setIndustryData] = useState<IndustryBreakdown[]>([]);
 
   useEffect(() => {
     setEvents(getTodayEvents());
     setTodos(mockTodos);
+    setSummary(mockSummary);
+    setIndustryData(mockIndustryBreakdown);
   }, []);
 
   const pendingTodos = todos.filter((t) => !t.completed);
@@ -151,13 +197,46 @@ function ScreensaverSidebar() {
   const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
 
   return (
-    <div className="absolute top-1/2 -translate-y-1/2 right-8 w-80 z-10 pointer-events-none select-none space-y-4">
+    <div className="absolute top-1/2 -translate-y-1/2 right-8 w-80 z-10 pointer-events-none select-none space-y-3">
+      {/* Analytics Preview Section */}
+      {summary && (
+        <div 
+          className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden pointer-events-auto"
+          onClick={stopPropagation}
+        >
+          <div className="px-4 py-2.5 border-b border-white/10 flex items-center gap-2">
+            <BarChart3 className="h-4 w-4 text-purple-400" />
+            <span className="text-sm font-medium text-white/80">Analytics</span>
+          </div>
+          
+          <div className="p-3 space-y-2.5">
+            {/* Key Metrics */}
+            <div className="grid grid-cols-2 gap-2">
+              <div className="p-2 rounded-lg bg-white/5">
+                <p className="text-[10px] text-white/50">Attendees</p>
+                <p className="text-lg font-semibold text-white">{formatNumber(summary.totalAttendees)}</p>
+              </div>
+              <div className="p-2 rounded-lg bg-white/5">
+                <p className="text-[10px] text-white/50">Engagement</p>
+                <p className="text-lg font-semibold text-white">{summary.averageEngagementScore.toFixed(0)}<span className="text-xs text-white/50">/100</span></p>
+              </div>
+            </div>
+            
+            {/* Mini Chart */}
+            <div>
+              <p className="text-[9px] text-white/40 mb-1.5 uppercase tracking-wider">By Industry</p>
+              <MiniBarChart data={industryData} />
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Calendar Section */}
       <div 
         className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden pointer-events-auto"
         onClick={stopPropagation}
       >
-        <div className="px-4 py-3 border-b border-white/10 flex items-center gap-2">
+        <div className="px-4 py-2.5 border-b border-white/10 flex items-center gap-2">
           <CalendarDays className="h-4 w-4 text-purple-400" />
           <span className="text-sm font-medium text-white/80">Today&apos;s Schedule</span>
           <span className="ml-auto text-xs text-white/40 bg-white/10 px-2 py-0.5 rounded-full">
@@ -165,7 +244,7 @@ function ScreensaverSidebar() {
           </span>
         </div>
         
-        <div className="p-3 space-y-2 max-h-[200px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+        <div className="p-3 space-y-2 max-h-[160px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
           {events.length > 0 ? (
             events.map((event) => {
               const Icon = eventTypeIcons[event.type];
@@ -173,15 +252,15 @@ function ScreensaverSidebar() {
                 <div
                   key={event.id}
                   className={cn(
-                    "p-2.5 rounded-lg border",
+                    "p-2 rounded-lg border",
                     eventTypeColors[event.type]
                   )}
                 >
-                  <div className="flex items-start gap-2.5">
+                  <div className="flex items-start gap-2">
                     <Icon className="h-3.5 w-3.5 mt-0.5 shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{event.title}</p>
-                      <div className="flex items-center gap-1.5 mt-1 text-xs opacity-80">
+                      <div className="flex items-center gap-1.5 mt-0.5 text-xs opacity-80">
                         <Clock className="h-3 w-3" />
                         <span>{event.startTime} - {event.endTime}</span>
                       </div>
@@ -197,8 +276,8 @@ function ScreensaverSidebar() {
               );
             })
           ) : (
-            <div className="py-4 text-center text-white/40">
-              <CalendarDays className="h-6 w-6 mx-auto mb-1.5 opacity-50" />
+            <div className="py-3 text-center text-white/40">
+              <CalendarDays className="h-5 w-5 mx-auto mb-1 opacity-50" />
               <p className="text-xs">No events today</p>
             </div>
           )}
@@ -210,7 +289,7 @@ function ScreensaverSidebar() {
         className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden pointer-events-auto"
         onClick={stopPropagation}
       >
-        <div className="px-4 py-3 border-b border-white/10 flex items-center gap-2">
+        <div className="px-4 py-2.5 border-b border-white/10 flex items-center gap-2">
           <ListTodo className="h-4 w-4 text-purple-400" />
           <span className="text-sm font-medium text-white/80">Tasks</span>
           <div className="ml-auto flex items-center gap-2 text-xs text-white/40">
@@ -225,12 +304,12 @@ function ScreensaverSidebar() {
           </div>
         </div>
         
-        <div className="p-3 space-y-1.5 max-h-[180px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+        <div className="p-3 space-y-1.5 max-h-[140px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
           {sortedTodos.length > 0 ? (
             sortedTodos.map((todo) => (
               <div
                 key={todo.id}
-                className="flex items-center gap-2.5 p-2 rounded-lg bg-white/5"
+                className="flex items-center gap-2 p-1.5 rounded-lg bg-white/5"
               >
                 <span
                   className={cn(
@@ -252,8 +331,8 @@ function ScreensaverSidebar() {
               </div>
             ))
           ) : (
-            <div className="py-4 text-center text-white/40">
-              <ListTodo className="h-6 w-6 mx-auto mb-1.5 opacity-50" />
+            <div className="py-3 text-center text-white/40">
+              <ListTodo className="h-5 w-5 mx-auto mb-1 opacity-50" />
               <p className="text-xs">All tasks completed!</p>
             </div>
           )}

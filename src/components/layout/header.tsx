@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Menu, Search, LogOut, User, Settings, MonitorPlay } from "lucide-react";
+import { Bell, Search, LogOut, User, Settings, MonitorPlay, BarChart3 } from "lucide-react";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { FullscreenToggle } from "@/components/shared/fullscreen-toggle";
 import { Button } from "@/components/ui/button";
@@ -83,9 +83,26 @@ export function Header() {
 
         {/* Right side - Actions */}
         <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <FullscreenToggle />
-          
+          {/* Data Analytics */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => router.push("/data")}
+                  className="border-border/50 bg-background/50 backdrop-blur-sm hover:bg-accent hover:border-primary/30 transition-all duration-200"
+                >
+                  <BarChart3 className="h-[1.2rem] w-[1.2rem] text-primary" />
+                  <span className="sr-only">View analytics</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Event Analytics</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
           {/* Screensaver trigger */}
           <TooltipProvider>
             <Tooltip>
@@ -96,7 +113,7 @@ export function Header() {
                   onClick={activateScreensaver}
                   className="border-border/50 bg-background/50 backdrop-blur-sm hover:bg-accent hover:border-primary/30 transition-all duration-200"
                 >
-                  <MonitorPlay className="h-[1.2rem] w-[1.2rem]" />
+                  <MonitorPlay className="h-[1.2rem] w-[1.2rem] text-primary" />
                   <span className="sr-only">Start screensaver</span>
                 </Button>
               </TooltipTrigger>
@@ -105,6 +122,9 @@ export function Header() {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+          
+          <ThemeToggle />
+          <FullscreenToggle />
           
           {/* User menu */}
           {user && (
@@ -163,12 +183,12 @@ export function Header() {
                   onClick={toggleSidebar}
                   className="border-border/50 bg-background/50 backdrop-blur-sm hover:bg-accent hover:border-primary/30 transition-all duration-200"
                 >
-                  <Menu className="h-[1.2rem] w-[1.2rem] text-primary" />
-                  <span className="sr-only">Toggle sidebar</span>
+                  <Bell className="h-[1.2rem] w-[1.2rem] text-primary" />
+                  <span className="sr-only">Pending events</span>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Open sidebar (⌘/)</p>
+                <p>Pending events (⌘/)</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

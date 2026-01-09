@@ -56,6 +56,15 @@ export function LoginForm() {
     const success = await login({ email, password });
 
     if (success) {
+      // Request fullscreen immediately after successful login
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch (err) {
+        console.error("Fullscreen error:", err);
+      }
+      
       // Open sidebar after successful login to welcome the user
       openSidebar();
       router.push("/");

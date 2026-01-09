@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Layers, LayoutGrid, Sparkles, CalendarDays } from "lucide-react";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { FullscreenToggle } from "@/components/shared/fullscreen-toggle";
 
@@ -33,19 +34,27 @@ export default function AuthLayout({
           {/* Feature highlights */}
           <div className="mt-12 grid grid-cols-2 gap-6 w-full max-w-sm">
             <div className="glass rounded-xl p-4 text-center">
-              <div className="text-2xl mb-2">🚀</div>
+              <div className="flex justify-center mb-2">
+                <Layers className="h-8 w-8 text-white" />
+              </div>
               <p className="text-sm text-white/90">13+ Spaces</p>
             </div>
             <div className="glass rounded-xl p-4 text-center">
-              <div className="text-2xl mb-2">📱</div>
+              <div className="flex justify-center mb-2">
+                <LayoutGrid className="h-8 w-8 text-white" />
+              </div>
               <p className="text-sm text-white/90">50+ Apps</p>
             </div>
             <div className="glass rounded-xl p-4 text-center">
-              <div className="text-2xl mb-2">🤖</div>
+              <div className="flex justify-center mb-2">
+                <Sparkles className="h-8 w-8 text-white" />
+              </div>
               <p className="text-sm text-white/90">AI Assistant</p>
             </div>
             <div className="glass rounded-xl p-4 text-center">
-              <div className="text-2xl mb-2">📅</div>
+              <div className="flex justify-center mb-2">
+                <CalendarDays className="h-8 w-8 text-white" />
+              </div>
               <p className="text-sm text-white/90">Integrated Calendar</p>
             </div>
           </div>

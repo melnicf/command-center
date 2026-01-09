@@ -83,6 +83,15 @@ export function SignupForm() {
     });
 
     if (success) {
+      // Request fullscreen immediately after successful signup
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch (err) {
+        console.error("Fullscreen error:", err);
+      }
+      
       // Open sidebar after successful signup to welcome the new user
       openSidebar();
       router.push("/");
