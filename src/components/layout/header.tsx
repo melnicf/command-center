@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Bell, LogOut, User, Settings, MonitorPlay, BarChart3, Sun, Moon, Monitor, Maximize, Minimize } from "lucide-react";
+import { Calendar, LogOut, User, Settings, MonitorPlay, BarChart3, Sun, Moon, Monitor, Maximize, Minimize } from "lucide-react";
 import { InfoDialog } from "@/components/layout/info-dialog";
 import { useTheme } from "next-themes";
 import { ProfileDialog } from "@/components/layout/profile-dialog";
@@ -300,12 +300,12 @@ export function Header() {
                   onClick={toggleSidebar}
                   className="border-border/50 bg-background/50 backdrop-blur-sm hover:bg-accent hover:border-primary/30 transition-all duration-200"
                 >
-                  <Bell className="h-[1.2rem] w-[1.2rem] text-primary" />
-                  <span className="sr-only">Pending events</span>
+                  <Calendar className="h-[1.2rem] w-[1.2rem] text-primary" />
+                  <span className="sr-only">Calendar & Todos</span>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Pending events (⌘/)</p>
+                <p>Calendar & Todos (⌘/)</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

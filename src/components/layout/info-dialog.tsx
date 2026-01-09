@@ -24,7 +24,6 @@ interface ShortcutItem {
 }
 
 const keyboardShortcuts: ShortcutItem[] = [
-  { keys: ["⌘", "K"], description: "Open search" },
   { keys: ["⌘", "/"], description: "Toggle notifications sidebar" },
   { keys: ["⌘", "B"], description: "Toggle sidebar (alternative)" },
   { keys: ["⌘", "⇧", "S"], description: "Activate screensaver" },

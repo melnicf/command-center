@@ -10,13 +10,6 @@ export function useKeyboardShortcuts() {
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Cmd/Ctrl + K - Open search (placeholder - can be extended)
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
-        // TODO: Open search modal when implemented
-        console.log("Search triggered (Cmd+K)");
-      }
-
       // Cmd/Ctrl + / - Toggle sidebar
       if ((e.metaKey || e.ctrlKey) && e.key === "/") {
         e.preventDefault();
