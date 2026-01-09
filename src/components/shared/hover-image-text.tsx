@@ -25,6 +25,7 @@ function HoverImage({ word, image, alt, accentColor }: HoverImageProps) {
   const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
   const [wordWidth, setWordWidth] = React.useState(0);
   const [mounted, setMounted] = React.useState(false);
+  const [imageError, setImageError] = React.useState(false);
   const wordRef = React.useRef<HTMLSpanElement>(null);
 
   // Mount check for portal
@@ -79,7 +80,8 @@ function HoverImage({ word, image, alt, accentColor }: HoverImageProps) {
         className={cn(
           "block overflow-hidden rounded-xl",
           "shadow-2xl shadow-black/20 dark:shadow-black/40",
-          "ring-2 ring-white/20 dark:ring-white/10"
+          "ring-2 ring-white/20 dark:ring-white/10",
+          imageError && "bg-muted flex items-center justify-center"
         )}
         style={{
           transform: `translate(-50%, -100%) rotate(${rotation}deg)`,
@@ -87,13 +89,20 @@ function HoverImage({ word, image, alt, accentColor }: HoverImageProps) {
           height: `${scale * 100}px`,
         }}
       >
-        <Image
-          src={image}
-          alt={alt || word}
-          width={100}
-          height={100}
-          className="object-cover w-full h-full"
-        />
+        {!imageError ? (
+          <Image
+            src={image}
+            alt={alt || word}
+            width={100}
+            height={100}
+            className="object-contain w-full h-full"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <span className="text-xs text-muted-foreground px-2 text-center">
+            {word}
+          </span>
+        )}
       </div>
     </div>,
     document.body

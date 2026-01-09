@@ -157,7 +157,7 @@ export function AppCard({ app, spaceColor, onClick, viewMode = "default", classN
           boxShadow: isHovering ? `0 8px 24px ${accentColor}20` : "none",
         }}
       >
-        {app.icon && !imageError ? (
+        {app.icon && app.icon.trim() !== "" && !imageError ? (
           <Image
             src={app.icon}
             alt={app.name}
