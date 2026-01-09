@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Header } from "./header";
 import { Sidebar } from "@/components/sidebar/sidebar";
+import { Chat } from "@/components/chat";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +23,7 @@ export function AppShell({ children, className }: AppShellProps) {
         {children}
       </main>
       <Sidebar />
+      <Chat />
     </div>
   );
 }

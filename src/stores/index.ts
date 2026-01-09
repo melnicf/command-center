@@ -6,3 +6,10 @@ export {
   useAuthLoading, 
   useAuthError 
 } from "./auth-store";
+export {
+  useChatStore,
+  useChatMessages,
+  useChatIsOpen,
+  useChatIsTyping,
+  useChatSuggestions
+} from "./chat-store";

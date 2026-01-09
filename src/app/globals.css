@@ -378,6 +378,73 @@
   .animate-glow {
     animation: glow-pulse 2s ease-in-out infinite;
   }
+  
+  /* Subtle pulse animation for chat toggle */
+  @keyframes pulse-subtle {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 6px 25px rgba(139, 92, 246, 0.5);
+    }
+  }
+  
+  .animate-pulse-subtle {
+    animation: pulse-subtle 3s ease-in-out infinite;
+  }
+  
+  /* Bowie pulse animation - gentle scale pulse */
+  @keyframes bowie-pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.08);
+    }
+  }
+  
+  .animate-bowie-pulse {
+    animation: bowie-pulse 2s ease-in-out infinite;
+  }
+  
+  /* Bowie float animation - floating in space effect */
+  @keyframes bowie-float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-2px) rotate(2deg);
+    }
+    50% {
+      transform: translateY(0) rotate(0deg);
+    }
+    75% {
+      transform: translateY(-2px) rotate(-2deg);
+    }
+  }
+  
+  .animate-bowie-float {
+    animation: bowie-float 4s ease-in-out infinite;
+  }
+  
+  /* Bowie peek animation - uses margin to not conflict with transform */
+  @keyframes bowie-peek {
+    0%, 65%, 100% {
+      margin-bottom: 0px;
+    }
+    75%, 90% {
+      margin-bottom: 25px;
+    }
+    82% {
+      margin-bottom: 22px;
+    }
+  }
+  
+  .animate-bowie-peek {
+    animation: bowie-peek 5s ease-in-out infinite;
+  }
 }
 
 /* ============================================
