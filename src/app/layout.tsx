@@ -17,6 +17,52 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "INVNT Command Center",
   description: "Modern command center for organizational workspace management",
+  keywords: ["INVNT", "command center", "workspace", "productivity", "organization"],
+  authors: [{ name: "INVNT" }],
+  creator: "INVNT",
+  publisher: "INVNT",
+  openGraph: {
+    title: "INVNT Command Center",
+    description: "Modern command center for organizational workspace management",
+    type: "website",
+    locale: "en_US",
+    siteName: "INVNT Command Center",
+    images: [
+      {
+        url: "/INVNT logo.png",
+        width: 8192,
+        height: 7786,
+        alt: "INVNT Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "INVNT Command Center",
+    description: "Modern command center for organizational workspace management",
+    images: ["/INVNT logo.png"],
+  },
+  icons: {
+    icon: [
+      { url: "/icon.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+  },
+  manifest: "/manifest.json",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
 };
 
 export default function RootLayout({

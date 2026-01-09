@@ -4,6 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Bell, LogOut, User, Settings, MonitorPlay, BarChart3, Sun, Moon, Monitor, Maximize, Minimize } from "lucide-react";
+import { InfoDialog } from "@/components/layout/info-dialog";
 import { useTheme } from "next-themes";
 import { ProfileDialog } from "@/components/layout/profile-dialog";
 import { Button } from "@/components/ui/button";
@@ -236,6 +237,9 @@ export function Header() {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+
+          {/* Info & Shortcuts */}
+          <InfoDialog />
           
           {/* User menu */}
           {user && (
