@@ -21,6 +21,7 @@ interface AuthState {
   clearError: () => void;
   initialize: () => Promise<void>;
   setHasHydrated: (state: boolean) => void;
+  updateUser: (updates: Partial<Pick<User, 'firstName' | 'lastName' | 'avatar'>>) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -114,6 +115,19 @@ export const useAuthStore = create<AuthState>()(
       // Clear error
       clearError: () => {
         set({ error: null });
+      },
+
+      // Update user profile
+      updateUser: (updates: Partial<Pick<User, 'firstName' | 'lastName' | 'avatar'>>) => {
+        const { user } = get();
+        if (user) {
+          set({
+            user: {
+              ...user,
+              ...updates,
+            },
+          });
+        }
       },
 
       // Initialize auth state from persisted token
