@@ -1,11 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { CheckCircle2, Circle, ListTodo } from "lucide-react";
-import { mockTodos, type Todo } from "@/data/todos";
+import { CheckCircle2, Circle, ListTodo, Plus } from "lucide-react";
+import { useCalendarStore, type Todo } from "@/stores/calendar-store";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const priorityColors = {
   low: "text-muted-foreground",
@@ -57,7 +59,7 @@ function TodoItem({ todo, onToggle }: TodoItemProps) {
         {todo.dueDate && !todo.completed && (
           <span className="text-xs text-muted-foreground ml-3.5">
             Due{" "}
-            {todo.dueDate.toLocaleDateString("en-US", {
+            {new Date(todo.dueDate).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
             })}
@@ -69,22 +71,11 @@ function TodoItem({ todo, onToggle }: TodoItemProps) {
 }
 
 export function SidebarTodos() {
-  const [todos, setTodos] = React.useState<Todo[]>([]);
+  const router = useRouter();
+  const { todos, toggleTodo, getPendingTodos, getCompletedTodos } = useCalendarStore();
 
-  React.useEffect(() => {
-    setTodos(mockTodos);
-  }, []);
-
-  const handleToggle = (id: string) => {
-    setTodos((prev) =>
-      prev.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-  };
-
-  const pendingCount = todos.filter((t) => !t.completed).length;
-  const completedCount = todos.filter((t) => t.completed).length;
+  const pendingCount = getPendingTodos().length;
+  const completedCount = getCompletedTodos().length;
 
   // Sort: incomplete first, then by priority
   const sortedTodos = [...todos].sort((a, b) => {
@@ -109,6 +100,14 @@ export function SidebarTodos() {
             <CheckCircle2 className="h-3 w-3 text-success" />
             {completedCount}
           </span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6"
+            onClick={() => router.push("/calendar")}
+          >
+            <Plus className="h-3.5 w-3.5" />
+          </Button>
         </div>
       </div>
 
@@ -116,7 +115,7 @@ export function SidebarTodos() {
         <ScrollArea className="h-[200px] pr-2">
           <div className="space-y-1">
             {sortedTodos.map((todo) => (
-              <TodoItem key={todo.id} todo={todo} onToggle={handleToggle} />
+              <TodoItem key={todo.id} todo={todo} onToggle={toggleTodo} />
             ))}
           </div>
         </ScrollArea>
@@ -124,6 +123,14 @@ export function SidebarTodos() {
         <div className="py-8 text-center text-muted-foreground">
           <ListTodo className="h-8 w-8 mx-auto mb-2 opacity-50" />
           <p className="text-sm">No tasks yet</p>
+          <Button
+            variant="link"
+            size="sm"
+            className="text-primary mt-1"
+            onClick={() => router.push("/calendar")}
+          >
+            Add a task
+          </Button>
         </div>
       )}
     </div>

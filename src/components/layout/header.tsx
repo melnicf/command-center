@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Calendar, LogOut, User, Settings, MonitorPlay, BarChart3, Sun, Moon, Monitor, Maximize, Minimize } from "lucide-react";
+import { Calendar, LogOut, User, Settings, MonitorPlay, BarChart3, Sun, Moon, Monitor, Maximize, Minimize, PanelRight } from "lucide-react";
 import { InfoDialog } from "@/components/layout/info-dialog";
 import { useTheme } from "next-themes";
 import { ProfileDialog } from "@/components/layout/profile-dialog";
@@ -218,6 +218,26 @@ export function Header() {
 
         {/* Right side - Actions */}
         <div className="flex items-center gap-2">
+          {/* Calendar & Tasks */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => router.push("/calendar")}
+                  className="border-border/50 bg-background/50 backdrop-blur-sm hover:bg-accent hover:border-primary/30 transition-all duration-200"
+                >
+                  <Calendar className="h-[1.2rem] w-[1.2rem] text-primary" />
+                  <span className="sr-only">Calendar & Tasks</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Calendar & Tasks</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
           {/* Data Analytics */}
           <TooltipProvider>
             <Tooltip>
@@ -300,12 +320,12 @@ export function Header() {
                   onClick={toggleSidebar}
                   className="border-border/50 bg-background/50 backdrop-blur-sm hover:bg-accent hover:border-primary/30 transition-all duration-200"
                 >
-                  <Calendar className="h-[1.2rem] w-[1.2rem] text-primary" />
-                  <span className="sr-only">Calendar & Todos</span>
+                  <PanelRight className="h-[1.2rem] w-[1.2rem] text-primary" />
+                  <span className="sr-only">Sidebar</span>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Calendar & Todos (⌘/)</p>
+                <p>Sidebar (⌘/)</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

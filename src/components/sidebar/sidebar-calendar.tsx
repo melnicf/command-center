@@ -1,10 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { CalendarDays, Clock, MapPin, Video } from "lucide-react";
-import { getTodayEvents, type CalendarEvent } from "@/data/events";
+import { CalendarDays, Clock, MapPin, Video, Plus } from "lucide-react";
+import { useCalendarStore, type CalendarEvent } from "@/stores/calendar-store";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const eventTypeColors = {
   meeting: "bg-primary/20 text-primary border-primary/30",
@@ -59,11 +61,16 @@ function EventCard({ event }: EventCardProps) {
 }
 
 export function SidebarCalendar() {
+  const router = useRouter();
+  const { getTodayEvents } = useCalendarStore();
   const [todayEvents, setTodayEvents] = React.useState<CalendarEvent[]>([]);
+
+  // Subscribe to store changes
+  const events = useCalendarStore((state) => state.events);
 
   React.useEffect(() => {
     setTodayEvents(getTodayEvents());
-  }, []);
+  }, [getTodayEvents, events]);
 
   return (
     <div className="space-y-3">
@@ -72,9 +79,19 @@ export function SidebarCalendar() {
           <CalendarDays className="h-4 w-4 text-primary" />
           Today&apos;s Schedule
         </h3>
-        <span className="text-xs text-muted-foreground">
-          {todayEvents.length} events
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">
+            {todayEvents.length} events
+          </span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6"
+            onClick={() => router.push("/calendar")}
+          >
+            <Plus className="h-3.5 w-3.5" />
+          </Button>
+        </div>
       </div>
 
       {todayEvents.length > 0 ? (
@@ -89,6 +106,14 @@ export function SidebarCalendar() {
         <div className="py-8 text-center text-muted-foreground">
           <CalendarDays className="h-8 w-8 mx-auto mb-2 opacity-50" />
           <p className="text-sm">No events scheduled for today</p>
+          <Button
+            variant="link"
+            size="sm"
+            className="text-primary mt-1"
+            onClick={() => router.push("/calendar")}
+          >
+            Add an event
+          </Button>
         </div>
       )}
     </div>

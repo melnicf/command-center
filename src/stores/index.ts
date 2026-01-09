@@ -19,3 +19,8 @@ export {
   useScreensaverLocationName,
   useScreensaverTimezone
 } from "./screensaver-store";
+export {
+  useCalendarStore,
+  type CalendarEvent,
+  type Todo
+} from "./calendar-store";

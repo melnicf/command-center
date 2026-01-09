@@ -8,10 +8,8 @@ import { CalendarDays, Clock, MapPin, Video, ListTodo, Circle, CheckCircle2, Bar
 import { Earth } from "./earth";
 import { FloatingBadger } from "./floating-objects";
 import { useScreensaverStore, useScreensaverActive, useScreensaverLocationName, useScreensaverTimezone } from "@/stores/screensaver-store";
-import { useUser } from "@/stores";
+import { useUser, useCalendarStore, type CalendarEvent, type Todo } from "@/stores";
 import { useGreeting } from "@/hooks/use-greeting";
-import { getTodayEvents, type CalendarEvent } from "@/data/events";
-import { mockTodos, type Todo } from "@/data/todos";
 import { mockSummary, mockIndustryBreakdown, formatNumber } from "@/data/analytics";
 import type { AnalyticsSummary, IndustryBreakdown } from "@/types/analytics";
 import { cn } from "@/lib/utils";
@@ -173,20 +171,22 @@ function MiniBarChart({ data }: { data: IndustryBreakdown[] }) {
 }
 
 function ScreensaverSidebar() {
+  const { getTodayEvents, getPendingTodos, getCompletedTodos, todos: allTodos } = useCalendarStore();
   const [events, setEvents] = useState<CalendarEvent[]>([]);
-  const [todos, setTodos] = useState<Todo[]>([]);
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
   const [industryData, setIndustryData] = useState<IndustryBreakdown[]>([]);
 
+  // Subscribe to store changes
+  const storeEvents = useCalendarStore((state) => state.events);
+
   useEffect(() => {
     setEvents(getTodayEvents());
-    setTodos(mockTodos);
     setSummary(mockSummary);
     setIndustryData(mockIndustryBreakdown);
-  }, []);
+  }, [getTodayEvents, storeEvents]);
 
-  const pendingTodos = todos.filter((t) => !t.completed);
-  const completedCount = todos.filter((t) => t.completed).length;
+  const pendingTodos = getPendingTodos();
+  const completedCount = getCompletedTodos().length;
 
   // Sort todos: incomplete first, then by priority
   const sortedTodos = [...pendingTodos].sort((a, b) => {
@@ -322,7 +322,7 @@ function ScreensaverSidebar() {
                 </span>
                 {todo.dueDate && (
                   <span className="text-xs text-white/40 shrink-0">
-                    {todo.dueDate.toLocaleDateString("en-US", {
+                    {new Date(todo.dueDate).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                     })}
