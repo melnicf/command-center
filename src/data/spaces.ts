@@ -21,6 +21,14 @@ export const spaces: Space[] = [
     name: "Creative",
     slug: "creative",
     description: "Design, ideation, and creative production tools",
+    longDescription: "Welcome to the Creative space, your hub for design excellence and visual storytelling. Here you'll find powerful tools like Figma for collaborative interface design, MidJourney for AI-powered imagery, and the complete Adobe suite for professional production. Whether you're crafting presentations in Keynote or generating stunning visuals with Runway, this space empowers your creative vision.",
+    hoverWords: [
+      { word: "Figma", image: "/icons/apps/Figma Logo.png", alt: "Figma design tool" },
+      { word: "MidJourney", image: "/icons/apps/midjourney.png", alt: "MidJourney AI" },
+      { word: "Adobe", image: "/icons/apps/adobe creative.png", alt: "Adobe Creative Cloud" },
+      { word: "Keynote", image: "/icons/apps/keynote.png", alt: "Apple Keynote" },
+      { word: "Runway", image: "/icons/apps/runway.png", alt: "Runway AI video" },
+    ],
     iconComponent: Palette,
     color: "#EC4899", // Pink
     gradient: "from-pink-500 to-rose-500",
@@ -104,6 +112,12 @@ export const spaces: Space[] = [
     name: "Production",
     slug: "production",
     description: "Event production and 3D design tools",
+    longDescription: "The Production space is where ideas become reality. Our team leverages industry-leading CAD software including AutoCAD for precise technical drawings, SketchUp for rapid 3D modeling, and VectorWorks for comprehensive BIM workflows. From initial concept to final installation, these tools ensure every event is executed with precision.",
+    hoverWords: [
+      { word: "AutoCAD", image: "/icons/apps/autocad.jpeg", alt: "AutoCAD software" },
+      { word: "SketchUp", image: "/icons/apps/SketchUp Logo.png", alt: "SketchUp 3D" },
+      { word: "VectorWorks", image: "/icons/apps/Vectorworks Logo.png", alt: "VectorWorks BIM" },
+    ],
     iconComponent: Factory,
     color: "#F97316", // Orange
     gradient: "from-orange-500 to-amber-500",
@@ -147,6 +161,13 @@ export const spaces: Space[] = [
     name: "Finance",
     slug: "finance",
     description: "Financial management and accounting tools",
+    longDescription: "The Finance space centralizes all financial operations and reporting. Access Xero for cloud-based accounting, NetSuite for enterprise resource planning, and Concur for seamless expense management. ProCim helps track project costs in real-time, ensuring every budget stays on target and every dollar is accounted for.",
+    hoverWords: [
+      { word: "Xero", image: "/icons/apps/xero.svg", alt: "Xero accounting" },
+      { word: "NetSuite", image: "/icons/apps/netsuite.png", alt: "NetSuite ERP" },
+      { word: "Concur", image: "/icons/apps/SAP Concur Logo.jpg", alt: "SAP Concur" },
+      { word: "ProCim", image: "/icons/apps/pro cim.png", alt: "ProCim" },
+    ],
     iconComponent: DollarSign,
     color: "#10B981", // Emerald
     gradient: "from-emerald-500 to-teal-500",
@@ -190,6 +211,12 @@ export const spaces: Space[] = [
     name: "HR",
     slug: "hr",
     description: "Human resources and compliance tools",
+    longDescription: "The HR space is your destination for all things people-related. Complete compliance training through Llama, find answers in our comprehensive FAQ knowledge base, and reference company policies in the Handbook. We're committed to making human resources accessible and straightforward for everyone.",
+    hoverWords: [
+      { word: "Llama", image: "/icons/apps/EasyLlama Logo.jpeg", alt: "Easy Llama training" },
+      { word: "FAQ", image: "/icons/apps/faq logo.webp", alt: "FAQ knowledge base" },
+      { word: "Handbook", image: "/icons/apps/handbook.png", alt: "Employee handbook" },
+    ],
     iconComponent: Users,
     color: "#8B5CF6", // Violet
     gradient: "from-violet-500 to-purple-500",
@@ -225,6 +252,7 @@ export const spaces: Space[] = [
     name: "People & Culture",
     slug: "people-culture",
     description: "Team engagement and culture initiatives",
+    longDescription: "People & Culture is the heart of our organization. This space celebrates our team through engagement initiatives, recognition programs, and community building. From company events to professional development opportunities, we foster an environment where everyone can thrive and grow together.",
     iconComponent: Heart,
     color: "#EF4444", // Red
     gradient: "from-red-500 to-rose-500",
@@ -235,6 +263,7 @@ export const spaces: Space[] = [
     name: "Innovation",
     slug: "innovation",
     description: "Research, development, and new ideas",
+    longDescription: "The Innovation space is where tomorrow's ideas take shape today. This is our laboratory for experimentation, research, and breakthrough thinking. Whether exploring emerging technologies or reimagining existing processes, this space encourages bold ideas and creative problem-solving.",
     iconComponent: Lightbulb,
     color: "#FBBF24", // Amber
     gradient: "from-amber-400 to-yellow-500",
@@ -245,6 +274,7 @@ export const spaces: Space[] = [
     name: "IT",
     slug: "it",
     description: "Information technology and infrastructure",
+    longDescription: "The IT space manages our digital infrastructure and technical support. From network security to hardware provisioning, our technology team ensures seamless operations across all offices. Submit support tickets, access system documentation, and stay updated on maintenance schedules.",
     iconComponent: Monitor,
     color: "#06B6D4", // Cyan
     gradient: "from-cyan-500 to-blue-500",
@@ -255,6 +285,7 @@ export const spaces: Space[] = [
     name: "AI",
     slug: "ai",
     description: "Artificial intelligence tools and resources",
+    longDescription: "The AI space is your gateway to artificial intelligence and machine learning tools. Explore generative AI for content creation, leverage automation for repetitive tasks, and discover how intelligent systems can enhance your workflow. This space bridges cutting-edge technology with practical applications.",
     iconComponent: Bot,
     color: "#A855F7", // Purple
     gradient: "from-purple-500 to-indigo-500",
@@ -265,6 +296,7 @@ export const spaces: Space[] = [
     name: "Offices",
     slug: "offices",
     description: "Office locations and facilities",
+    longDescription: "The Offices space connects you to all our global locations. Find office directories, book meeting rooms, and access facility information. Whether you're visiting a new location or managing your home office setup, this space has everything you need to stay connected.",
     iconComponent: Building2,
     color: "#64748B", // Slate
     gradient: "from-slate-500 to-gray-500",
@@ -275,6 +307,7 @@ export const spaces: Space[] = [
     name: "Design",
     slug: "design",
     description: "Design systems and brand resources",
+    longDescription: "The Design space houses our brand guidelines, design systems, and visual assets. Access logo files, color palettes, typography standards, and template libraries. This is the definitive source for maintaining brand consistency across all touchpoints and communications.",
     iconComponent: Figma,
     color: "#F24E1E", // Figma orange
     gradient: "from-orange-500 to-red-500",
@@ -285,6 +318,7 @@ export const spaces: Space[] = [
     name: "Freelance",
     slug: "freelance",
     description: "Freelancer management and resources",
+    longDescription: "The Freelance space streamlines collaboration with our extended network of talent. Manage contractor onboarding, track project assignments, and handle invoicing workflows. This space ensures smooth operations with our valued freelance partners around the world.",
     iconComponent: Briefcase,
     color: "#14B8A6", // Teal
     gradient: "from-teal-500 to-emerald-500",
@@ -295,6 +329,7 @@ export const spaces: Space[] = [
     name: "Digital",
     slug: "digital",
     description: "Digital marketing and online presence",
+    longDescription: "The Digital space powers our online presence and marketing initiatives. From social media management to analytics dashboards, this space provides tools for digital engagement, content distribution, and performance tracking across all digital channels.",
     iconComponent: Globe,
     color: "#3B82F6", // Blue
     gradient: "from-blue-500 to-indigo-500",
@@ -305,6 +340,7 @@ export const spaces: Space[] = [
     name: "Wellbeing / Time Office",
     slug: "wellbeing",
     description: "Employee wellness and time management",
+    longDescription: "The Wellbeing space prioritizes your health and work-life balance. Access mental health resources, track time off requests, and discover wellness programs. From meditation guides to fitness challenges, we support your journey to a healthier, more balanced professional life.",
     iconComponent: Sparkles,
     color: "#22C55E", // Green
     gradient: "from-green-500 to-emerald-500",

@@ -11,11 +11,20 @@ export interface App {
   color?: string; // Brand color for the app
 }
 
+// Words in the long description that show images on hover
+export interface HoverWord {
+  word: string;
+  image: string;
+  alt?: string;
+}
+
 export interface Space {
   id: string;
   name: string;
   slug: string;
   description: string;
+  longDescription?: string; // Extended description for detail page
+  hoverWords?: HoverWord[]; // Words that show images on hover
   icon?: string; // Path to icon image
   iconComponent?: LucideIcon; // Fallback Lucide icon
   color: string; // Brand/accent color for the space
