@@ -1,47 +1,26 @@
 import Image from "next/image";
-import { ThemeToggle } from "@/components/shared/theme-toggle";
-import { FullscreenToggle } from "@/components/shared/fullscreen-toggle";
+import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Home() {
   return (
-    <main className="h-screen flex flex-col bg-background overflow-hidden">
-      {/* Header - Fixed */}
-      <header className="shrink-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md">
-        <div className="flex h-14 items-center justify-between px-4">
-          <div className="flex items-center gap-3">
-            <Image
-              src="/INVNT logo.png"
-              alt="INVNT"
-              width={32}
-              height={32}
-              className="object-contain"
-            />
-            <span className="text-xl font-bold gradient-primary-text">Command Center</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <FullscreenToggle />
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content - Scrollable */}
-      <div className="flex-1 overflow-auto">
+    <AppShell>
+      <ScrollArea className="h-full">
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-12">
           <div className="mx-auto max-w-3xl text-center">
             <Badge variant="secondary" className="mb-4">
-              Phase 2: Theme & Design System ✓
+              Phase 3: Layout & Navigation ✓
             </Badge>
             <h1 className="mb-4 gradient-primary-text animate-gradient">
               Command Center
             </h1>
             <p className="lead mb-8">
               A modern command center application for organizational workspace management.
-              Toggle between dark and light themes, or enter fullscreen mode for a desktop-app experience.
+              Toggle between dark and light themes, enter fullscreen mode, or open the sidebar for calendar and tasks.
             </p>
             <div className="flex justify-center gap-4">
               <Button size="lg" className="glow-purple">
@@ -51,6 +30,50 @@ export default function Home() {
                 Learn More
               </Button>
             </div>
+          </div>
+        </section>
+
+        {/* Keyboard Shortcuts Reference */}
+        <section className="container mx-auto px-4 py-8">
+          <h2 className="mb-8 text-center">Keyboard Shortcuts</h2>
+          
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto">
+            <Card className="p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Toggle Sidebar</span>
+                <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">⌘/</kbd>
+              </div>
+            </Card>
+            <Card className="p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Toggle Sidebar (Alt)</span>
+                <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">⌘B</kbd>
+              </div>
+            </Card>
+            <Card className="p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Quick Search</span>
+                <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">⌘K</kbd>
+              </div>
+            </Card>
+            <Card className="p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Fullscreen</span>
+                <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">F11</kbd>
+              </div>
+            </Card>
+            <Card className="p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Fullscreen (Alt)</span>
+                <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">⌘⇧F</kbd>
+              </div>
+            </Card>
+            <Card className="p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Close / Exit</span>
+                <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">ESC</kbd>
+              </div>
+            </Card>
           </div>
         </section>
 
@@ -238,22 +261,14 @@ export default function Home() {
                 <p className="text-muted-foreground">
                   This command center is designed to feel like a native desktop application. 
                   Use the <strong>fullscreen button</strong> in the header (or press <kbd className="px-2 py-1 bg-muted rounded text-xs">F11</kbd>) 
-                  to enter presentation mode. The interface is optimized for immersive, OS-like interactions.
+                  to enter presentation mode. Click the <strong>menu icon</strong> (or press <kbd className="px-2 py-1 bg-muted rounded text-xs">⌘/</kbd>) 
+                  to open the sidebar with your calendar and tasks.
                 </p>
               </div>
             </div>
           </Card>
         </section>
-      </div>
-
-      {/* Footer - Fixed */}
-      <footer className="shrink-0 border-t border-border/50 py-3 bg-background/80 backdrop-blur-md">
-        <div className="container mx-auto px-4 text-center">
-          <p className="muted text-xs">
-            INVNT Command Center • Phase 2: Theme & Design System Complete
-          </p>
-        </div>
-      </footer>
-    </main>
+      </ScrollArea>
+    </AppShell>
   );
 }
