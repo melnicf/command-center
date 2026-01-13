@@ -355,20 +355,32 @@ export function Screensaver() {
   const location = useScreensaverLocationName();
   const timezone = useScreensaverTimezone();
   const deactivateScreensaver = useScreensaverStore((s) => s.deactivateScreensaver);
-  const [isVisible, setIsVisible] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+  
+  // Track if this is the initial mount - if already active, show immediately
+  const isInitialMount = React.useRef(true);
+  const [isVisible, setIsVisible] = useState(isActive);
+  const [isMounted, setIsMounted] = useState(isActive);
 
   // Handle mount animation
   useEffect(() => {
     if (isActive) {
       setIsMounted(true);
-      // Small delay for mount before fade in
+      
+      // If this is the initial mount and already active, show immediately (no fade)
+      if (isInitialMount.current) {
+        isInitialMount.current = false;
+        setIsVisible(true);
+        return;
+      }
+      
+      // Otherwise, small delay for mount before fade in
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           setIsVisible(true);
         });
       });
     } else {
+      isInitialMount.current = false;
       setIsVisible(false);
       // Wait for fade out before unmount
       const timer = setTimeout(() => setIsMounted(false), 500);

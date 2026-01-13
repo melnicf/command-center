@@ -13,6 +13,8 @@ import {
   Briefcase,
   Globe,
   Sparkles,
+  UserCog,
+  Rocket,
 } from "lucide-react";
 
 // Helper function to generate logo URLs using Logo.dev (official Clearbit replacement)
@@ -178,12 +180,11 @@ export const spaces: Space[] = [
     name: "Finance",
     slug: "finance",
     description: "Financial management and accounting tools",
-    longDescription: "The Finance space centralizes all financial operations and reporting. Access Xero for cloud-based accounting, NetSuite for enterprise resource planning, and Concur for seamless expense management. ProCim helps track project costs in real-time, ensuring every budget stays on target and every dollar is accounted for.",
+    longDescription: "The Finance space centralizes all financial operations and reporting. Access Xero for cloud-based accounting, NetSuite for enterprise resource planning, and Concur for seamless expense management, ensuring every budget stays on target and every dollar is accounted for.",
     hoverWords: [
       { word: "Xero", image: getLogoUrl("xero.com") || "", alt: "Xero accounting" },
       { word: "NetSuite", image: getLogoUrl("netsuite.com") || "", alt: "NetSuite ERP" },
       { word: "Concur", image: getLogoUrl("concur.com") || "", alt: "SAP Concur" },
-      { word: "ProCim", image: getLogoUrl("procim.com") || "", alt: "ProCim" },
     ],
     iconComponent: DollarSign,
     color: "#10B981", // Emerald
@@ -213,9 +214,65 @@ export const spaces: Space[] = [
         icon: getLogoUrl("concur.com"),
         color: "#0072C6",
       },
+    ],
+  },
+  {
+    id: "agents",
+    name: "Agents",
+    slug: "agents",
+    description: "AI agents for RFPs, RFIs, and case studies",
+    longDescription: "The Agents space houses our intelligent AI agents that automate and streamline critical business processes. Use our Proposals agent to generate comprehensive RFP and RFI responses, and leverage the Showcase agent to create compelling case studies and success stories from project data. These agents work alongside your team to deliver faster, more consistent results.",
+    hoverWords: [
+      { word: "Proposals", image: getLogoUrl("pandadoc.com") || "", alt: "RFP/RFI Agent" },
+      { word: "Showcase", image: getLogoUrl("behance.net") || "", alt: "Case Studies Agent" },
+    ],
+    iconComponent: UserCog,
+    color: "#6366F1", // Indigo
+    gradient: "from-indigo-500 to-violet-500",
+    apps: [
+      {
+        id: "rfp-rfi",
+        name: "RFP/RFI",
+        slug: "rfp-rfi",
+        description: "AI-powered proposal response generation",
+        icon: getLogoUrl("pandadoc.com"),
+        color: "#6366F1",
+      },
+      {
+        id: "case-studies",
+        name: "Case Studies",
+        slug: "case-studies",
+        description: "Automated case study creation from projects",
+        icon: getLogoUrl("behance.net"),
+        color: "#8B5CF6",
+      },
+    ],
+  },
+  {
+    id: "implementation",
+    name: "Implementation",
+    slug: "implementation",
+    description: "Project implementation and time tracking tools",
+    longDescription: "The Implementation space provides essential tools for project execution and resource management. Track time and attendance with TimeKeeping to ensure accurate billing and productivity insights. Use PROcim for comprehensive project cost management, keeping every implementation on budget and on schedule.",
+    hoverWords: [
+      { word: "TimeKeeping", image: getLogoUrl("timekeeping.com") || "", alt: "TimeKeeping" },
+      { word: "PROcim", image: getLogoUrl("procim.com") || "", alt: "PROcim" },
+    ],
+    iconComponent: Rocket,
+    color: "#F59E0B", // Amber
+    gradient: "from-amber-500 to-orange-500",
+    apps: [
+      {
+        id: "timekeeping",
+        name: "TimeKeeping",
+        slug: "timekeeping",
+        description: "Time tracking and attendance management",
+        icon: getLogoUrl("timekeeping.com"),
+        color: "#F59E0B",
+      },
       {
         id: "procim",
-        name: "ProCim",
+        name: "PROcim",
         slug: "procim",
         description: "Project cost management",
         icon: getLogoUrl("procim.com"),

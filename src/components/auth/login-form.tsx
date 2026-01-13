@@ -8,7 +8,7 @@ import { Eye, EyeOff, Loader2, Mail, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuthStore, useSidebarStore } from "@/stores";
+import { useAuthStore, useScreensaverStore } from "@/stores";
 import { authService } from "@/services/auth";
 
 interface FormErrors {
@@ -19,7 +19,7 @@ interface FormErrors {
 export function LoginForm() {
   const router = useRouter();
   const { login, isLoading, error, clearError } = useAuthStore();
-  const { openSidebar } = useSidebarStore();
+  const activateScreensaver = useScreensaverStore((s) => s.activateScreensaver);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -65,8 +65,8 @@ export function LoginForm() {
         console.error("Fullscreen error:", err);
       }
       
-      // Open sidebar after successful login to welcome the user
-      openSidebar();
+      // Activate screensaver after successful login to welcome the user
+      activateScreensaver();
       router.push("/");
     }
   };

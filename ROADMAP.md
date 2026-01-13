@@ -102,6 +102,8 @@ A modern command center application for organizational workspace management.
   - Creative
   - Production
   - Finance
+  - Agents
+  - Implementation
   - HR
   - People & Culture
   - Innovation
@@ -150,7 +152,14 @@ A modern command center application for organizational workspace management.
 - Xero
 - NetSuite
 - SAP Concur
-- ProCim
+
+**Agents Apps:**
+- RFP/RFI
+- Case Studies
+
+**Implementation Apps:**
+- TimeKeeping
+- PROcim
 
 **HR Apps:**
 - Easy Llama
