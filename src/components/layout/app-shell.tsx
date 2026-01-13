@@ -7,7 +7,15 @@ import { Sidebar } from "@/components/sidebar/sidebar";
 import { Chat } from "@/components/chat";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { useIdleDetection } from "@/hooks/use-idle-detection";
+import { useScreensaverActive } from "@/stores/screensaver-store";
 import { cn } from "@/lib/utils";
+
+// Instant black overlay shown while Screensaver loads
+function ScreensaverPlaceholder() {
+  const isActive = useScreensaverActive();
+  if (!isActive) return null;
+  return <div className="fixed inset-0 z-100 bg-black" />;
+}
 
 // Dynamically import Screensaver to avoid SSR issues with Three.js
 const Screensaver = dynamic(
@@ -47,7 +55,12 @@ export function AppShell({
       </main>
       <Sidebar />
       <Chat />
-      {enableScreensaver && <Screensaver />}
+      {enableScreensaver && (
+        <>
+          <ScreensaverPlaceholder />
+          <Screensaver />
+        </>
+      )}
     </div>
   );
 }
