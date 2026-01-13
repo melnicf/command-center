@@ -109,6 +109,62 @@ function LogoDisplay() {
   );
 }
 
+const dailyQuotes = [
+  "Every day is a chance to create something that moves people.",
+  "Your passion is the spark — let it ignite everything you do.",
+  "Great things happen when we dare to think bigger together.",
+  "Be bold. Be curious. Be the change you want to see.",
+  "Today, let's make impossible feel inevitable.",
+  "The best ideas come when we stop fearing failure.",
+  "Dream wildly. Execute relentlessly.",
+  "You have the power to turn moments into memories.",
+  "Challenge convention. Embrace the unexpected.",
+  "Show up fully — the world needs what only you can give.",
+  "Innovation starts with the courage to ask 'what if?'",
+  "Let your work speak louder than your doubts.",
+  "Together, we don't just imagine the future — we build it.",
+  "Stay hungry for impact, not just success.",
+  "Your creativity is your superpower. Use it wisely.",
+  "Make today count. Tomorrow will thank you.",
+  "The magic is in the details — and in the people.",
+  "Push boundaries. Break molds. Create legends.",
+  "Every interaction is an opportunity to inspire.",
+  "Believe in the work. Believe in each other.",
+  "Excellence isn't a goal — it's a habit.",
+  "Let curiosity lead the way.",
+  "The only limit is the one we accept.",
+  "Create with intention. Lead with heart.",
+  "Today's effort becomes tomorrow's legacy.",
+  "When we lift each other, we all rise.",
+  "Don't wait for the perfect moment — make it.",
+  "Your energy sets the tone. Make it electric.",
+  "Small acts of brilliance add up to big impact.",
+  "Stay fearless. Stay focused. Stay you.",
+  "Let's make something extraordinary — together.",
+];
+
+function QuoteDisplay() {
+  // Pick a random quote on mount
+  const [todaysQuote] = useState(() => 
+    dailyQuotes[Math.floor(Math.random() * dailyQuotes.length)]
+  );
+
+  return (
+    <div className="absolute top-10 left-1/2 -translate-x-1/2 z-10 pointer-events-none select-none max-w-lg text-center animate-float-subtle">
+      <blockquote className="relative px-8">
+        <span className="absolute -left-2 -top-4 text-4xl text-purple-500/30 font-serif">&ldquo;</span>
+        <p className="text-lg md:text-xl text-white/80 font-light italic leading-relaxed">
+          {todaysQuote}
+        </p>
+        <span className="absolute -right-2 -bottom-4 text-4xl text-purple-500/30 font-serif">&rdquo;</span>
+      </blockquote>
+      <footer className="mt-3 text-sm text-purple-400/70 tracking-wide">
+        — Kristina
+      </footer>
+    </div>
+  );
+}
+
 // Event type styles for screensaver
 const eventTypeColors = {
   meeting: "bg-purple-500/20 text-purple-300 border-purple-500/30",
@@ -426,6 +482,9 @@ export function Screensaver() {
       )}
       onClick={handleInteraction}
     >
+      {/* Inspirational Quote */}
+      <QuoteDisplay />
+      
       {/* Time and Location Display */}
       <TimeDisplay timezone={timezone} location={location} />
       
