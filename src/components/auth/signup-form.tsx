@@ -8,7 +8,7 @@ import { Eye, EyeOff, Loader2, Mail, Lock, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuthStore, useSidebarStore } from "@/stores";
+import { useAuthStore, useScreensaverStore } from "@/stores";
 
 interface FormErrors {
   firstName?: string;
@@ -21,7 +21,7 @@ interface FormErrors {
 export function SignupForm() {
   const router = useRouter();
   const { signUp, isLoading, error, clearError } = useAuthStore();
-  const { openSidebar } = useSidebarStore();
+  const activateScreensaver = useScreensaverStore((s) => s.activateScreensaver);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -92,8 +92,8 @@ export function SignupForm() {
         console.error("Fullscreen error:", err);
       }
       
-      // Open sidebar after successful signup to welcome the new user
-      openSidebar();
+      // Activate screensaver after successful signup to welcome the new user
+      activateScreensaver();
       router.push("/");
     }
   };
