@@ -498,3 +498,47 @@
 .animate-float-subtle {
   animation: float-subtle 12s ease-in-out infinite;
 }
+
+/* Shimmer effect for swag badges */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s infinite;
+}
+
+/* Badge sparkle effect */
+@keyframes badge-sparkle {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.animate-badge-sparkle {
+  animation: badge-sparkle 2s ease-in-out infinite;
+}
+
+/* Coin bounce effect */
+@keyframes coin-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.animate-coin-bounce {
+  animation: coin-bounce 1.5s ease-in-out infinite;
+}

@@ -14,36 +14,21 @@ const MOCK_DELAY = 1000;
 // Storage key for persisted users
 const USERS_STORAGE_KEY = 'invnt-mock-users';
 
-// Default demo users
+// Hardcoded authorized user
 const defaultUsers: Array<[string, { user: User; password: string }]> = [
   [
-    'demo@invnt.com',
+    'jkinney@invnt.com',
     {
       user: {
         id: '1',
-        email: 'demo@invnt.com',
-        firstName: 'Demo',
-        lastName: 'User',
+        email: 'jkinney@invnt.com',
+        firstName: 'J',
+        lastName: 'Kinney',
         avatar: undefined,
         role: 'admin',
         createdAt: new Date('2024-01-01'),
       },
-      password: 'demo123',
-    },
-  ],
-  [
-    'john@invnt.com',
-    {
-      user: {
-        id: '2',
-        email: 'john@invnt.com',
-        firstName: 'John',
-        lastName: 'Smith',
-        avatar: undefined,
-        role: 'manager',
-        createdAt: new Date('2024-03-15'),
-      },
-      password: 'password123',
+      password: 'demo1234!',
     },
   ],
 ];

@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthStore, useScreensaverStore } from "@/stores";
-import { authService } from "@/services/auth";
 
 interface FormErrors {
   email?: string;
@@ -69,15 +68,6 @@ export function LoginForm() {
       activateScreensaver();
       router.push("/");
     }
-  };
-
-  // Fill demo credentials
-  const fillDemoCredentials = () => {
-    const demo = authService.getDemoCredentials();
-    setEmail(demo.email);
-    setPassword(demo.password);
-    setFormErrors({});
-    clearError();
   };
 
   return (
@@ -172,28 +162,6 @@ export function LoginForm() {
           "Sign in"
         )}
       </Button>
-
-      {/* Demo credentials button */}
-      <Button
-        type="button"
-        variant="outline"
-        className="w-full"
-        onClick={fillDemoCredentials}
-        disabled={isLoading}
-      >
-        Use demo account
-      </Button>
-
-      {/* Sign up link */}
-      <p className="text-center text-sm text-muted-foreground">
-        Don&apos;t have an account?{" "}
-        <Link
-          href="/signup"
-          className="font-medium text-primary hover:text-primary/80 transition-colors"
-        >
-          Sign up
-        </Link>
-      </p>
     </form>
   );
 }

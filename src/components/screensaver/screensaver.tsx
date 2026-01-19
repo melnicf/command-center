@@ -4,15 +4,79 @@ import * as React from "react";
 import { Suspense, useEffect, useState, useCallback } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
-import { CalendarDays, Clock, MapPin, Video, ListTodo, Circle, CheckCircle2, BarChart3 } from "lucide-react";
+import { CalendarDays, Clock, MapPin, Video, ListTodo, Circle, CheckCircle2, Coins, Award, Sparkles, Star, Trophy, Zap, Heart, Flame, Crown, Gift } from "lucide-react";
 import { Earth } from "./earth";
 import { FloatingBadger } from "./floating-objects";
 import { useScreensaverStore, useScreensaverActive, useScreensaverLocationName, useScreensaverTimezone } from "@/stores/screensaver-store";
 import { useUser, useCalendarStore, type CalendarEvent, type Todo } from "@/stores";
 import { useGreeting } from "@/hooks/use-greeting";
-import { mockSummary, mockIndustryBreakdown, formatNumber } from "@/data/analytics";
-import type { AnalyticsSummary, IndustryBreakdown } from "@/types/analytics";
 import { cn } from "@/lib/utils";
+
+// Boey Badger Bucks - Swag Currency System
+interface SwagBadge {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  icon: "star" | "trophy" | "zap" | "heart" | "flame" | "crown" | "gift" | "sparkles";
+  color: string;
+  rarity: "common" | "rare" | "epic" | "legendary";
+}
+
+const allBadges: SwagBadge[] = [
+  { id: "early-bird", name: "Early Bird", description: "First one in the office", price: 50, icon: "star", color: "text-amber-400", rarity: "common" },
+  { id: "team-player", name: "Team Player", description: "Helped 10 colleagues", price: 100, icon: "heart", color: "text-pink-400", rarity: "common" },
+  { id: "idea-machine", name: "Idea Machine", description: "Pitched 5 creative concepts", price: 150, icon: "zap", color: "text-yellow-400", rarity: "rare" },
+  { id: "event-guru", name: "Event Guru", description: "Led a successful event", price: 200, icon: "trophy", color: "text-emerald-400", rarity: "rare" },
+  { id: "culture-champion", name: "Culture Champion", description: "Embodies INVNT values", price: 300, icon: "flame", color: "text-orange-400", rarity: "epic" },
+  { id: "innovation-star", name: "Innovation Star", description: "Brought something new to life", price: 400, icon: "sparkles", color: "text-purple-400", rarity: "epic" },
+  { id: "legend", name: "INVNT Legend", description: "The ultimate achiever", price: 1000, icon: "crown", color: "text-yellow-300", rarity: "legendary" },
+  { id: "surprise-box", name: "Mystery Box", description: "What's inside?", price: 75, icon: "gift", color: "text-cyan-400", rarity: "common" },
+];
+
+// Mock user data - acquired badges and balance
+// Note: "legend" (INVNT Legend) is NOT in acquiredBadgeIds so it appears in the store
+const mockUserBadgerBucks = {
+  balance: 425,
+  acquiredBadgeIds: ["early-bird", "team-player", "surprise-box"], // Only common badges acquired
+};
+
+// Swaggy rarity styles with gradients and glows
+const rarityStyles = {
+  common: "border-slate-400/30 bg-gradient-to-br from-slate-500/20 to-slate-600/10",
+  rare: "border-blue-400/50 bg-gradient-to-br from-blue-500/25 to-cyan-500/15 shadow-[0_0_15px_rgba(59,130,246,0.3)]",
+  epic: "border-purple-400/50 bg-gradient-to-br from-purple-500/25 to-fuchsia-500/15 shadow-[0_0_20px_rgba(168,85,247,0.4)]",
+  legendary: "border-yellow-400/60 bg-gradient-to-br from-yellow-500/30 to-amber-500/20 shadow-[0_0_25px_rgba(251,191,36,0.5)] animate-pulse",
+};
+
+const rarityGlow = {
+  common: "",
+  rare: "drop-shadow-[0_0_4px_rgba(59,130,246,0.6)]",
+  epic: "drop-shadow-[0_0_6px_rgba(168,85,247,0.7)]",
+  legendary: "drop-shadow-[0_0_8px_rgba(251,191,36,0.8)] animate-[spin_4s_linear_infinite]",
+};
+
+const rarityLabels = {
+  common: { text: "Common", color: "text-slate-400" },
+  rare: { text: "Rare", color: "text-blue-400" },
+  epic: { text: "Epic", color: "text-purple-400" },
+  legendary: { text: "Legendary", color: "text-yellow-400" },
+};
+
+const BadgeIcon = ({ icon, className, rarity = "common" }: { icon: SwagBadge["icon"]; className?: string; rarity?: SwagBadge["rarity"] }) => {
+  const icons = {
+    star: Star,
+    trophy: Trophy,
+    zap: Zap,
+    heart: Heart,
+    flame: Flame,
+    crown: Crown,
+    gift: Gift,
+    sparkles: Sparkles,
+  };
+  const IconComponent = icons[icon];
+  return <IconComponent className={cn(className, rarityGlow[rarity])} />;
+};
 
 interface TimeDisplayProps {
   timezone: string;
@@ -144,22 +208,17 @@ const dailyQuotes = [
 ];
 
 function QuoteDisplay() {
-  // Pick a random quote on mount
-  const [todaysQuote] = useState(() => 
-    dailyQuotes[Math.floor(Math.random() * dailyQuotes.length)]
-  );
-
   return (
     <div className="absolute top-10 left-1/2 -translate-x-1/2 z-10 pointer-events-none select-none max-w-lg text-center animate-float-subtle">
       <blockquote className="relative px-8">
         <span className="absolute -left-2 -top-4 text-4xl text-purple-500/30 font-serif">&ldquo;</span>
         <p className="text-lg md:text-xl text-white/80 font-light italic leading-relaxed">
-          {todaysQuote}
+          We are leading the creative revolution for brands worldwide
         </p>
         <span className="absolute -right-2 -bottom-4 text-4xl text-purple-500/30 font-serif">&rdquo;</span>
       </blockquote>
       <footer className="mt-3 text-sm text-purple-400/70 tracking-wide">
-        — Kristina
+        — Kristina McCoobery, CEO
       </footer>
     </div>
   );
@@ -186,42 +245,202 @@ const priorityDots = {
   high: "bg-red-400",
 };
 
-// Mini bar chart component for screensaver data preview
-function MiniBarChart({ data }: { data: IndustryBreakdown[] }) {
-  if (!data || data.length === 0) return null;
+// Boey Badger Bucks Display Component - Compact SWAGGY Edition
+function BadgerBucksDisplay({ isExpanded, onHoverChange }: { isExpanded: boolean; onHoverChange: (hovered: boolean) => void }) {
+  const [balance] = useState(mockUserBadgerBucks.balance);
+  const acquiredBadges = allBadges.filter((b) => mockUserBadgerBucks.acquiredBadgeIds.includes(b.id));
+  const availableBadges = allBadges.filter((b) => !mockUserBadgerBucks.acquiredBadgeIds.includes(b.id));
   
-  const maxValue = Math.max(...data.map((d) => d.attendees));
-  const maxHeight = 40; // pixels
-  const colors = [
-    "bg-purple-500",
-    "bg-purple-400",
-    "bg-fuchsia-500",
-    "bg-emerald-500",
-    "bg-sky-500",
-  ];
+  // Find legendary badge for featured section
+  const legendaryBadge = availableBadges.find((b) => b.rarity === "legendary");
+  const regularShopBadges = availableBadges.filter((b) => b.rarity !== "legendary");
   
+  const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
+
   return (
-    <div className="flex items-end gap-1.5" style={{ height: `${maxHeight + 16}px` }}>
-      {data.slice(0, 5).map((item, index) => {
-        const barHeight = Math.max(4, (item.attendees / maxValue) * maxHeight);
-        return (
-          <div
-            key={item.industry}
-            className="flex-1 flex flex-col items-center justify-end"
-          >
-            <div
-              className={cn(
-                "w-full rounded-t transition-all duration-500",
-                colors[index % colors.length]
-              )}
-              style={{ height: `${barHeight}px`, opacity: 0.8 }}
-            />
-            <span className="text-[8px] text-white/40 truncate w-full text-center mt-1">
-              {item.industry.slice(0, 3)}
-            </span>
+    <div 
+      className={cn(
+        "relative bg-gradient-to-br from-purple-900/40 via-black/50 to-amber-900/30 backdrop-blur-xl rounded-2xl border border-purple-500/30 overflow-hidden pointer-events-auto shadow-[0_0_40px_rgba(168,85,247,0.15)] transition-all duration-300",
+        isExpanded && "shadow-[0_0_60px_rgba(168,85,247,0.25)]"
+      )}
+      onClick={stopPropagation}
+      onMouseEnter={() => onHoverChange(true)}
+      onMouseLeave={() => onHoverChange(false)}
+    >
+      {/* Animated shimmer overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_3s_infinite] pointer-events-none" />
+      
+      {/* Compact Header with Balance */}
+      <div className="relative px-3 py-2 border-b border-white/10 bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-amber-500/10 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <Coins className="h-4 w-4 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+            <Sparkles className="h-2 w-2 text-amber-200 absolute -top-0.5 -right-0.5 animate-pulse" />
           </div>
-        );
-      })}
+          <span className="text-xs font-bold bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-300 bg-clip-text text-transparent">
+            Badger Bucks
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5 bg-gradient-to-r from-amber-500/30 to-yellow-500/20 px-2 py-1 rounded-lg border border-amber-400/40 shadow-[0_0_15px_rgba(251,191,36,0.3)]">
+          <Coins className="h-3 w-3 text-amber-300" />
+          <span className="text-sm font-bold text-amber-200">{balance}</span>
+        </div>
+      </div>
+      
+      <div className="p-2.5 space-y-2.5">
+        {/* Acquired Badges - Compact Icon Row */}
+        <div>
+          <div className="flex items-center gap-1.5 mb-2">
+            <Award className="h-3 w-3 text-emerald-400" />
+            <p className="text-[10px] font-semibold text-emerald-300 uppercase tracking-wider">
+              Collected
+            </p>
+            <span className="text-[9px] text-emerald-400/70 ml-auto">{acquiredBadges.length}/{allBadges.length}</span>
+          </div>
+          
+          <div className="flex flex-wrap gap-1.5 px-0.5">
+            {acquiredBadges.length > 0 ? (
+              acquiredBadges.map((badge) => (
+                <div
+                  key={badge.id}
+                  className={cn(
+                    "relative p-1.5 rounded-lg border flex items-center gap-1.5 transition-all hover:brightness-125",
+                    rarityStyles[badge.rarity]
+                  )}
+                  title={`${badge.name}: ${badge.description}`}
+                >
+                  <div className={cn(
+                    "w-5 h-5 rounded-full flex items-center justify-center",
+                    badge.rarity === "legendary" ? "bg-yellow-400/30" :
+                    badge.rarity === "epic" ? "bg-purple-400/30" :
+                    badge.rarity === "rare" ? "bg-blue-400/30" : "bg-white/10"
+                  )}>
+                    <BadgeIcon icon={badge.icon} rarity={badge.rarity} className={cn("h-3 w-3", badge.color)} />
+                  </div>
+                  <span className="text-[9px] font-medium text-white/80">{badge.name}</span>
+                </div>
+              ))
+            ) : (
+              <p className="text-[9px] text-white/40 italic py-1">No badges yet!</p>
+            )}
+          </div>
+        </div>
+        
+        {/* Swag Shop - Expandable List */}
+        <div>
+          <div className="flex items-center gap-1.5 mb-2">
+            <Gift className="h-3 w-3 text-fuchsia-400" />
+            <p className="text-[10px] font-semibold text-fuchsia-300 uppercase tracking-wider">
+              Shop
+            </p>
+            <Sparkles className="h-2.5 w-2.5 text-fuchsia-400/50 animate-pulse" />
+            {!isExpanded && regularShopBadges.length > 2 && (
+              <span className="text-[8px] text-white/40 ml-auto">hover to expand</span>
+            )}
+          </div>
+          
+          {/* Featured Legendary Badge - INVNT Legend */}
+          {legendaryBadge && (
+            <div className={cn(
+              "relative rounded-xl border-2 border-yellow-400/50 bg-gradient-to-r from-yellow-500/20 via-amber-500/10 to-yellow-500/20 mb-1.5 transition-all duration-300",
+              isExpanded ? "p-2 shadow-[0_0_20px_rgba(251,191,36,0.3)]" : "p-1.5"
+            )}>
+              {isExpanded && (
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-400/10 to-transparent animate-[shimmer_2s_infinite] rounded-xl pointer-events-none" />
+              )}
+              <div className="flex items-center gap-2 relative">
+                <div className="relative shrink-0">
+                  {isExpanded && <div className="absolute inset-0 bg-yellow-400/40 blur-md rounded-full animate-pulse" />}
+                  <div className={cn(
+                    "relative rounded-full bg-gradient-to-br from-yellow-400/40 to-amber-600/40 flex items-center justify-center transition-all duration-300",
+                    isExpanded ? "w-8 h-8" : "w-5 h-5"
+                  )}>
+                    <Crown className={cn(
+                      "text-yellow-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.8)] transition-all duration-300",
+                      isExpanded ? "h-4 w-4 animate-pulse" : "h-2.5 w-2.5"
+                    )} />
+                  </div>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <p className={cn(
+                      "font-bold text-yellow-200 transition-all duration-300",
+                      isExpanded ? "text-[11px]" : "text-[10px]"
+                    )}>{legendaryBadge.name}</p>
+                    {isExpanded && (
+                      <span className="text-[7px] font-bold uppercase px-1 py-0.5 rounded bg-yellow-500/30 text-yellow-300">
+                        Legendary
+                      </span>
+                    )}
+                  </div>
+                  {isExpanded && (
+                    <p className="text-[8px] text-yellow-100/50">{legendaryBadge.description}</p>
+                  )}
+                </div>
+                <div className={cn(
+                  "flex items-center gap-0.5 rounded-lg font-bold shrink-0 transition-all duration-300",
+                  isExpanded ? "px-2 py-1 text-[10px] gap-1" : "px-1.5 py-0.5 text-[9px]",
+                  balance >= legendaryBadge.price 
+                    ? "bg-gradient-to-r from-yellow-500/40 to-amber-500/30 text-yellow-200 border border-yellow-400/50 shadow-[0_0_12px_rgba(251,191,36,0.4)]" 
+                    : "bg-white/5 text-white/30 border border-white/10"
+                )}>
+                  <Coins className={cn(
+                    "transition-all duration-300",
+                    isExpanded ? "h-3 w-3" : "h-2.5 w-2.5",
+                    balance >= legendaryBadge.price ? "text-yellow-300" : "text-white/30"
+                  )} />
+                  {legendaryBadge.price}
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {/* Regular Shop Items */}
+          <div className={cn(
+            "space-y-1.5 overflow-y-auto scrollbar-thin scrollbar-thumb-purple-500/30 scrollbar-track-transparent px-0.5 transition-all duration-300",
+            isExpanded ? "max-h-[200px]" : "max-h-[70px]"
+          )}>
+            {regularShopBadges.slice(0, isExpanded ? regularShopBadges.length : 2).map((badge) => {
+              const canAfford = balance >= badge.price;
+              return (
+                <div
+                  key={badge.id}
+                  className={cn(
+                    "relative p-1.5 rounded-lg border flex items-center gap-2 transition-all hover:brightness-110",
+                    rarityStyles[badge.rarity],
+                    canAfford ? "cursor-pointer" : "opacity-40"
+                  )}
+                >
+                  <div className={cn(
+                    "w-5 h-5 rounded-full flex items-center justify-center shrink-0",
+                    badge.rarity === "epic" ? "bg-purple-400/30" :
+                    badge.rarity === "rare" ? "bg-blue-400/30" : "bg-white/10"
+                  )}>
+                    <BadgeIcon icon={badge.icon} rarity={badge.rarity} className={cn("h-2.5 w-2.5", badge.color)} />
+                  </div>
+                  
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[10px] font-medium text-white/80 truncate">{badge.name}</p>
+                    {isExpanded && (
+                      <p className="text-[8px] text-white/40 truncate">{badge.description}</p>
+                    )}
+                  </div>
+                  
+                  <div className={cn(
+                    "flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-bold shrink-0",
+                    canAfford 
+                      ? "bg-amber-500/30 text-amber-200 border border-amber-400/30" 
+                      : "bg-white/5 text-white/30"
+                  )}>
+                    <Coins className="h-2.5 w-2.5" />
+                    {badge.price}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -229,16 +448,13 @@ function MiniBarChart({ data }: { data: IndustryBreakdown[] }) {
 function ScreensaverSidebar() {
   const { getTodayEvents, getPendingTodos, getCompletedTodos, todos: allTodos } = useCalendarStore();
   const [events, setEvents] = useState<CalendarEvent[]>([]);
-  const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
-  const [industryData, setIndustryData] = useState<IndustryBreakdown[]>([]);
+  const [isShopExpanded, setIsShopExpanded] = useState(false);
 
   // Subscribe to store changes
   const storeEvents = useCalendarStore((state) => state.events);
 
   useEffect(() => {
     setEvents(getTodayEvents());
-    setSummary(mockSummary);
-    setIndustryData(mockIndustryBreakdown);
   }, [getTodayEvents, storeEvents]);
 
   const pendingTodos = getPendingTodos();
@@ -253,96 +469,16 @@ function ScreensaverSidebar() {
   const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
 
   return (
-    <div className="absolute top-1/2 -translate-y-1/2 right-8 w-80 z-10 pointer-events-none select-none space-y-3">
-      {/* Analytics Preview Section */}
-      {summary && (
-        <div 
-          className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden pointer-events-auto"
-          onClick={stopPropagation}
-        >
-          <div className="px-4 py-2.5 border-b border-white/10 flex items-center gap-2">
-            <BarChart3 className="h-4 w-4 text-purple-400" />
-            <span className="text-sm font-medium text-white/80">Analytics</span>
-          </div>
-          
-          <div className="p-3 space-y-2.5">
-            {/* Key Metrics */}
-            <div className="grid grid-cols-2 gap-2">
-              <div className="p-2 rounded-lg bg-white/5">
-                <p className="text-[10px] text-white/50">Attendees</p>
-                <p className="text-lg font-semibold text-white">{formatNumber(summary.totalAttendees)}</p>
-              </div>
-              <div className="p-2 rounded-lg bg-white/5">
-                <p className="text-[10px] text-white/50">Engagement</p>
-                <p className="text-lg font-semibold text-white">{summary.averageEngagementScore.toFixed(0)}<span className="text-xs text-white/50">/100</span></p>
-              </div>
-            </div>
-            
-            {/* Mini Chart */}
-            <div>
-              <p className="text-[9px] text-white/40 mb-1.5 uppercase tracking-wider">By Industry</p>
-              <MiniBarChart data={industryData} />
-            </div>
-          </div>
-        </div>
-      )}
+    <div className="absolute bottom-24 right-8 w-80 z-10 pointer-events-none select-none flex flex-col-reverse gap-3">
+      {/* Boey Badger Bucks - Swag Currency Section - Anchored at bottom */}
+      <BadgerBucksDisplay isExpanded={isShopExpanded} onHoverChange={setIsShopExpanded} />
 
-      {/* Calendar Section */}
+      {/* Tasks Section - Collapses when shop is expanded */}
       <div 
-        className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden pointer-events-auto"
-        onClick={stopPropagation}
-      >
-        <div className="px-4 py-2.5 border-b border-white/10 flex items-center gap-2">
-          <CalendarDays className="h-4 w-4 text-purple-400" />
-          <span className="text-sm font-medium text-white/80">Today&apos;s Schedule</span>
-          <span className="ml-auto text-xs text-white/40 bg-white/10 px-2 py-0.5 rounded-full">
-            {events.length}
-          </span>
-        </div>
-        
-        <div className="p-3 space-y-2 max-h-[160px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
-          {events.length > 0 ? (
-            events.map((event) => {
-              const Icon = eventTypeIcons[event.type];
-              return (
-                <div
-                  key={event.id}
-                  className={cn(
-                    "p-2 rounded-lg border",
-                    eventTypeColors[event.type]
-                  )}
-                >
-                  <div className="flex items-start gap-2">
-                    <Icon className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{event.title}</p>
-                      <div className="flex items-center gap-1.5 mt-0.5 text-xs opacity-80">
-                        <Clock className="h-3 w-3" />
-                        <span>{event.startTime} - {event.endTime}</span>
-                      </div>
-                      {event.location && (
-                        <div className="flex items-center gap-1.5 mt-0.5 text-xs opacity-70">
-                          <MapPin className="h-3 w-3" />
-                          <span className="truncate">{event.location}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })
-          ) : (
-            <div className="py-3 text-center text-white/40">
-              <CalendarDays className="h-5 w-5 mx-auto mb-1 opacity-50" />
-              <p className="text-xs">No events today</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Tasks Section */}
-      <div 
-        className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden pointer-events-auto"
+        className={cn(
+          "bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden pointer-events-auto transition-all duration-300",
+          isShopExpanded && "opacity-60"
+        )}
         onClick={stopPropagation}
       >
         <div className="px-4 py-2.5 border-b border-white/10 flex items-center gap-2">
@@ -360,38 +496,104 @@ function ScreensaverSidebar() {
           </div>
         </div>
         
-        <div className="p-3 space-y-1.5 max-h-[140px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
-          {sortedTodos.length > 0 ? (
-            sortedTodos.map((todo) => (
-              <div
-                key={todo.id}
-                className="flex items-center gap-2 p-1.5 rounded-lg bg-white/5"
-              >
-                <span
-                  className={cn(
-                    "h-2 w-2 rounded-full shrink-0",
-                    priorityDots[todo.priority]
-                  )}
-                />
-                <span className="text-sm text-white/80 truncate flex-1">
-                  {todo.title}
-                </span>
-                {todo.dueDate && (
-                  <span className="text-xs text-white/40 shrink-0">
-                    {new Date(todo.dueDate).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    })}
+        <div className={cn(
+          "overflow-hidden transition-all duration-300",
+          isShopExpanded ? "max-h-0 p-0" : "max-h-[140px] p-3"
+        )}>
+          <div className="space-y-1.5 max-h-[116px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+            {sortedTodos.length > 0 ? (
+              sortedTodos.map((todo) => (
+                <div
+                  key={todo.id}
+                  className="flex items-center gap-2 p-1.5 rounded-lg bg-white/5"
+                >
+                  <span
+                    className={cn(
+                      "h-2 w-2 rounded-full shrink-0",
+                      priorityDots[todo.priority]
+                    )}
+                  />
+                  <span className="text-sm text-white/80 truncate flex-1">
+                    {todo.title}
                   </span>
-                )}
+                  {todo.dueDate && (
+                    <span className="text-xs text-white/40 shrink-0">
+                      {new Date(todo.dueDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </span>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div className="py-3 text-center text-white/40">
+                <ListTodo className="h-5 w-5 mx-auto mb-1 opacity-50" />
+                <p className="text-xs">All tasks completed!</p>
               </div>
-            ))
-          ) : (
-            <div className="py-3 text-center text-white/40">
-              <ListTodo className="h-5 w-5 mx-auto mb-1 opacity-50" />
-              <p className="text-xs">All tasks completed!</p>
-            </div>
-          )}
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Calendar Section - Collapses when shop is expanded */}
+      <div 
+        className={cn(
+          "bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden pointer-events-auto transition-all duration-300",
+          isShopExpanded && "opacity-60"
+        )}
+        onClick={stopPropagation}
+      >
+        <div className="px-4 py-2.5 border-b border-white/10 flex items-center gap-2">
+          <CalendarDays className="h-4 w-4 text-purple-400" />
+          <span className="text-sm font-medium text-white/80">Today&apos;s Schedule</span>
+          <span className="ml-auto text-xs text-white/40 bg-white/10 px-2 py-0.5 rounded-full">
+            {events.length}
+          </span>
+        </div>
+        
+        <div className={cn(
+          "overflow-hidden transition-all duration-300",
+          isShopExpanded ? "max-h-0 p-0" : "max-h-[160px] p-3"
+        )}>
+          <div className="space-y-2 max-h-[136px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+            {events.length > 0 ? (
+              events.map((event) => {
+                const Icon = eventTypeIcons[event.type];
+                return (
+                  <div
+                    key={event.id}
+                    className={cn(
+                      "p-2 rounded-lg border",
+                      eventTypeColors[event.type]
+                    )}
+                  >
+                    <div className="flex items-start gap-2">
+                      <Icon className="h-3.5 w-3.5 mt-0.5 shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{event.title}</p>
+                        <div className="flex items-center gap-1.5 mt-0.5 text-xs opacity-80">
+                          <Clock className="h-3 w-3" />
+                          <span>{event.startTime} - {event.endTime}</span>
+                        </div>
+                        {event.location && (
+                          <div className="flex items-center gap-1.5 mt-0.5 text-xs opacity-70">
+                            <MapPin className="h-3 w-3" />
+                            <span className="truncate">{event.location}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="py-3 text-center text-white/40">
+                <CalendarDays className="h-5 w-5 mx-auto mb-1 opacity-50" />
+                <p className="text-xs">No events today</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
